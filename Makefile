@@ -3,28 +3,23 @@
 TARGET = gcd
 SRCS = $(wildcard *.hs */*.hs)
 
-.PHONY: all
-all:	style lint build test bench doc tags
-
-.PHONY: style
-style:
-	@stylish-haskell -c .stylish-haskell.yaml -i $(SRCS)
-
-.PHONY: lint
-lint:
-	@hlint --color $(SRCS)
-
-.PHONY: check
-check:	lint style
-
-tags:	$(SRCS)
-	@hasktags --ctags $(SRCS)
-
-.PHONY: build
 build:	check
 	@stack build
 
-.PHONY: exec
+.PHONY: all
+all:	check build test bench doc tags
+
+style:	$(SRCS)
+	@stylish-haskell -c .stylish-haskell.yaml -i $(SRCS)
+
+lint:	$(SRCS)
+	@hlint --color $(SRCS)
+
+check:	lint style
+
+tags:	build
+	@hasktags --ctags $(SRCS)
+
 exec:	# Example:  make ARGS="112 12" exec
 	@stack exec -- $(TARGET) $(ARGS)
 

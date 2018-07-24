@@ -2,7 +2,7 @@ module Main where
 
 import           System.Environment (getArgs)
 
-import           GCD                (euclid, euclid')
+import           GCD                (euclid1, euclid2)
 
 -- Read two numbers from command line to evaluate their greatest common
 -- denominator.
@@ -19,6 +19,9 @@ main :: IO ()
 main = do
     args <- getArgs
     case length args of
-      2 -> print $ zipWith3 id [euclid, euclid'] [u,u] [v,v]
-            where [u, v] = map read args
+      2 -> print $ zipWith3 id [euclid1, euclid2] us vs
+            where
+              [u, v] = map read args
+              us = replicate 2 u
+              vs = replicate 2 v
       _ -> putStrLn usage

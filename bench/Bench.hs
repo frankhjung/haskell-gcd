@@ -2,19 +2,19 @@
 
 module Main (main) where
 
-import           GCD            (euclid, euclid')
+import           GCD            (euclid1, euclid2)
 
 import           Criterion.Main
 
 main :: IO ()
 main = defaultMain
-  [ bgroup "euclid subtraction"
+  [ bgroup "euclid 1 subtraction"
     [
-      bench "100" $ whnf euclid 100
+      bench "317" $ whnf euclid1 317
     ],
-    bgroup "euclid modulus"
+    bgroup "euclid 2 modulus"
     [
-      bench "100" $ whnf euclid' 100
+      bench "317" $ whnf euclid2 317
     ]
   ]
 

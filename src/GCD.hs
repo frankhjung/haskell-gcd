@@ -12,21 +12,21 @@
 
 -}
 
-module GCD (euclid, euclid') where
+module GCD (euclid1, euclid2) where
 
 -- | Greatest Common Denominator
 
 -- | Method 1 - using only subtraction
-euclid :: Int -> Int -> Int
-euclid u v  | u < 0     = 0
+euclid1 :: Int -> Int -> Int
+euclid1 u v | u < 0     = 0
             | v < 0     = 0
             | u == v    = u
-            | u < v     = euclid u (v - u)
-            | otherwise = euclid (u - v)  v
+            | u < v     = euclid1 u (v - u)
+            | otherwise = euclid1 (u - v)  v
 
 -- | Method 2 - using modulus
-euclid' :: Int -> Int -> Int
-euclid' u v = if remainder == 0
+euclid2 :: Int -> Int -> Int
+euclid2 u v = if remainder == 0
                 then v
-                else euclid' v remainder
+                else euclid2 v remainder
               where remainder = u `mod` v
