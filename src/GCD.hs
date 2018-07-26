@@ -14,12 +14,12 @@
 
 module GCD (euclid1, euclid2) where
 
--- | Greatest Common Denominator
+-- | Greatest Common Denominator (for numbers greater than 0)
 
 -- | Method 1 - using only subtraction
 euclid1 :: Int -> Int -> Int
-euclid1 u v | u < 0     = 0
-            | v < 0     = 0
+euclid1 u v | u <= 0    = 0
+            | v <= 0    = 0
             | u == v    = u
             | u < v     = euclid1 u (v - u)
             | otherwise = euclid1 (u - v)  v

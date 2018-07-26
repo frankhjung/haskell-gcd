@@ -8,13 +8,15 @@ import           Criterion.Main
 
 main :: IO ()
 main = defaultMain
-  [ bgroup "euclid 1 subtraction"
+
+  [
+    bgroup "euclid1: "
     [
-      bench "317" $ whnf euclid1 317
+      bench "379904" $ whnf euclid1 379904
     ],
-    bgroup "euclid 2 modulus"
+    bgroup "euclid2: "
     [
-      bench "317" $ whnf euclid2 317
+      bench "379904" $ whnf euclid2 379904
     ]
   ]
 

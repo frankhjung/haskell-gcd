@@ -2,6 +2,7 @@
 
 TARGET = gcd
 SRCS = $(wildcard *.hs */*.hs)
+ARGS ?= -h
 
 build:	check
 	@cabal build

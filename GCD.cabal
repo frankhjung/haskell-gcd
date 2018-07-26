@@ -33,11 +33,22 @@ library
   build-depends:     base >= 4.7 && < 5
   ghc-options:       -Wall
 
+test-suite test
+  hs-source-dirs:    test
+  main-is:           Spec.hs
+  default-language:  Haskell2010
+  type:              exitcode-stdio-1.0
+  build-depends:     base >= 4.7 && < 5
+                   , hspec >= 2.5
+                   , GCD
+  ghc-options:       -Wall
+                     -threaded
+
 benchmark benchmark
   hs-source-dirs:    bench
   main-is:           Bench.hs
   default-language:  Haskell2010
   type:              exitcode-stdio-1.0
   build-depends:     base >= 4.7 && < 5
-                   , criterion
+                   , criterion >= 1.3
                    , GCD

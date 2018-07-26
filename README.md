@@ -17,7 +17,32 @@ Or
 make -f stack.mk build
 ```
 
-## Benchmark
+## Tests
+
+Running tests using Cabal:
+
+```
+cat dist/test/GCD-0.1.0-test.log
+Test suite test: RUNNING...
+
+euclid1
+  euclid1 1 1
+    returns 1
+  euclid1 371 379904
+    returns 371
+euclid2
+  euclid2 1 1
+    returns 1
+  euclid2 371 379904
+    returns 371
+
+Finished in 0.0010 seconds
+4 examples, 0 failures
+Test suite test: PASS
+Test suite logged to: dist/test/GCD-0.1.0-test.log
+```
+
+## Benchmarks
 
 Benchmark of the two Euclid _Greatest Common Denominator_ algorithms.
 
@@ -58,7 +83,10 @@ rts 1.0
 $ cabal info .
 * GCD-0.1.0              (program and library)
     Synopsis:      Greatest Common Denominator
+    Versions available: [ Not available from server ]
+    Versions installed: [ Not installed ]
     Homepage:      https://github.com/frankhjung/gcd#readme
+    Bug reports:   [ Not specified ]
     Description:   Test versions of Euclid's greatest common denominator
                    algorithm
     Category:      education
@@ -68,7 +96,8 @@ $ cabal info .
     Source repo:   git@github.com:frankhjung/haskell-gcd.git
     Executables:   gcd
     Dependencies:  base >=4.7 && <5, GCD -any, base >=4.7 && <5, GCD -any,
-                   criterion -any, base >=4.7 && <5
+                   hspec >=2.5, base >=4.7 && <5, GCD -any, criterion >=1.3,
+                   base >=4.7 && <5
     Cached:        Yes
     Modules:
         GCD
