@@ -44,8 +44,8 @@ tags:
 
 .PHONY: doc
 doc:
-	@cabal haddock
 	@cabal doctest
+	@cabal haddock
 
 .PHONY: copy
 copy:
@@ -58,3 +58,7 @@ ghci:
 .PHONY: clean
 clean:
 	@cabal clean
+
+.PHONY: cleanall
+cleanall: clean
+	@$(RM) -rf */*.hi */*.o

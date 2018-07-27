@@ -1,8 +1,16 @@
-# GCD
+# Haskell Example Project
 
-Project to benchmark Greatest Common Denominator algorithms.
+This is an example project to show how to:
 
-The two methods tested here are described
+- lint, style and check source code
+- build using GNU Make using Cabal or Stack
+- unit test with HSpec
+- benchmark with Criterion
+- document using Haddock
+- profile using GHC
+
+It uses a couple of Greatest Common Denominator (GCD) algorithms as examples for
+testing and benchmarking. The GCD algorithms are described
 [here](https://en.wikipedia.org/wiki/Euclidean_algorithm).
 
 ## Build
@@ -66,6 +74,62 @@ std dev              67.93 ps   (56.92 ps .. 83.74 ps)
 Benchmark benchmark: FINISH
 ```
 
+## Profiling Using GHC
+
+The following shows how to profile this application using GHC:
+
+1. compile with profiling
+
+```bash
+ghc -prof -fprof-auto -rtsopts app/Main.hs src/GCD.hs
+```
+
+2. to profile run program with arguments:
+
+```bash
+app/Main 371 379904 +RTS -p
+```
+
+3. results are reported in `Main.prof`:
+
+```
+Fri Jul 27 23:05 2018 Time and Allocation Profiling Report  (Final)
+
+   Main +RTS -p -RTS 371 379904
+
+total time  =        0.00 secs   (1 ticks @ 1000 us, 1 processor)
+total alloc =     112,632 bytes  (excludes profiling overheads)
+
+COST CENTRE MODULE           SRC                         %time %alloc
+
+euclid1     GCD              src/GCD.hs:(21,1)-(25,44)   100.0   43.6
+CAF         GHC.IO.Handle.FD <entire-module>               0.0   30.8
+CAF         GHC.IO.Encoding  <entire-module>               0.0    2.9
+main        Main             app/Main.hs:(19,1)-(24,25)    0.0   12.0
+main.(...)  Main             app/Main.hs:23:19-40          0.0    8.5
+
+
+                                                                                         individual      inherited
+COST CENTRE          MODULE                SRC                        no.     entries  %time %alloc   %time %alloc
+
+MAIN                 MAIN                  <built-in>                 118          0    0.0    0.6   100.0  100.0
+ CAF                 Main                  <entire-module>            234          0    0.0    0.1     0.0    0.2
+  main               Main                  app/Main.hs:(19,1)-(24,25) 236          1    0.0    0.0     0.0    0.0
+ CAF                 GHC.Conc.Signal       <entire-module>            226          0    0.0    0.6     0.0    0.6
+ CAF                 GHC.IO.Encoding       <entire-module>            214          0    0.0    2.9     0.0    2.9
+ CAF                 GHC.IO.Encoding.Iconv <entire-module>            212          0    0.0    0.2     0.0    0.2
+ CAF                 GHC.IO.Handle.FD      <entire-module>            204          0    0.0   30.8     0.0   30.8
+ CAF                 GHC.IO.Handle.Text    <entire-module>            202          0    0.0    0.1     0.0    0.1
+ CAF                 Text.Read.Lex         <entire-module>            170          0    0.0    0.6     0.0    0.6
+ main                Main                  app/Main.hs:(19,1)-(24,25) 237          0    0.0   11.9   100.0   64.1
+  euclid1            GCD                   src/GCD.hs:(21,1)-(25,44)  238       1024  100.0   43.6   100.0   43.6
+  euclid2            GCD                   src/GCD.hs:(29,1)-(32,41)  242          2    0.0    0.1     0.0    0.1
+   euclid2.remainder GCD                   src/GCD.hs:32:21-41        243          2    0.0    0.0     0.0    0.0
+  main.(...)         Main                  app/Main.hs:23:19-40       240          1    0.0    8.5     0.0    8.5
+  main.u             Main                  app/Main.hs:23:19-40       239          1    0.0    0.0     0.0    0.0
+  main.v             Main                  app/Main.hs:23:19-40       241          1    0.0    0.0     0.0    0.0
+```
+
 ## Dependencies
 
 ### Install Dependencies
@@ -93,12 +157,9 @@ rts 1.0
 
 ```bash
 $ cabal info .
-* GCD-0.1.0              (program and library)
+* GCD-0.1.0        (program and library)
     Synopsis:      Greatest Common Denominator
-    Versions available: [ Not available from server ]
-    Versions installed: [ Not installed ]
     Homepage:      https://github.com/frankhjung/gcd#readme
-    Bug reports:   [ Not specified ]
     Description:   Test versions of Euclid's greatest common denominator
                    algorithm
     Category:      education
@@ -111,6 +172,5 @@ $ cabal info .
                    hspec >=2.5, base >=4.7 && <5, GCD -any, criterion >=1.3,
                    base >=4.7 && <5
     Cached:        Yes
-    Modules:
-        GCD
+    Modules:       GCD
 ```
