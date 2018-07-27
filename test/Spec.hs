@@ -1,5 +1,6 @@
 import           GCD        (euclid1, euclid2)
 
+import           Bezout     (besout)
 import           Test.Hspec (context, describe, hspec, it, shouldBe)
 
 main :: IO ()
@@ -20,3 +21,11 @@ main = hspec $ do
     context "euclid2 371 379904" $
       it "returns 371" $
         euclid2 371 379904 `shouldBe` (371 :: Int)
+
+  describe "besout" $ do
+    context "besout 1 1" $
+      it "returns 1" $
+        besout 1 1 `shouldBe` [0,1,1]
+    context "besout 371 379904" $
+      it "returns 371" $
+        besout 371 379904 `shouldBe` [1,0,371]

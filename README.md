@@ -68,6 +68,18 @@ Benchmark benchmark: FINISH
 
 ## Dependencies
 
+### Install Dependencies
+
+Install test, benchmark frameworks and an external GCD library:
+
+```bash
+cabal install hspec
+cabal install criterion
+cabal install --allow-newer besout-0.2.0.1
+```
+
+### List Dependencies
+
 ```bash
 $ stack list-dependencies
 GCD 0.1.0
