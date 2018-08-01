@@ -4,10 +4,10 @@ This is an example project to show how to:
 
 - lint, style and check source code
 - build using GNU Make using Cabal or Stack
-- unit test with HSpec
-- benchmark with Criterion
-- document using Haddock
-- profile using GHC
+- unit test with [HSpec](http://hackage.haskell.org/package/hspec)
+- benchmark with [Criterion](http://hackage.haskell.org/package/criterion)
+- document using [Haddock](http://hackage.haskell.org/package/haddock)
+- profile using [GHC](https://www.haskell.org/ghc/)
 
 It uses a couple of Greatest Common Denominator (GCD) algorithms as examples for
 testing and benchmarking. The GCD algorithms are described
@@ -15,63 +15,97 @@ testing and benchmarking. The GCD algorithms are described
 
 ## Build
 
+To prime environment with compiler, packages and dependencies, run the
+environment setup:
+
 ```bash
-make -f cabal.mk build
+$ stack update
+$ stack setup
+$ stack build
+$ cabal configure
+$ cabal build
+```
+
+This may not include the linter, styler and documentation tools.
+TODO - can we add this to stack.yaml as external dependencies?
+
+Then build using [GNU Make](https://www.gnu.org/software/make/):
+
+```bash
+$ make -f stack.mk build
 ```
 
 Or
 
 ```bash
-make -f stack.mk build
+$ make -f cabal.mk build
 ```
+
+Stack uses Cabal under the covers but does more package management. However,
+once Stack has installed required packages, then Cabal should happily compile
+for you.
 
 ## Tests
 
 Running tests using Cabal:
 
 ```
-cat dist/test/GCD-0.1.0-test.log
-Test suite test: RUNNING...
+$ make test
 
-euclid1
-  euclid1 1 1
-    returns 1
-  euclid1 371 379904
-    returns 371
-euclid2
-  euclid2 1 1
-    returns 1
-  euclid2 371 379904
-    returns 371
+  Preprocessing library for GCD-0.1.0..
+  Building library for GCD-0.1.0..
+  Preprocessing test suite 'test' for GCD-0.1.0..
+  Building test suite 'test' for GCD-0.1.0..
+  Running 1 test suites...
+  Test suite test: RUNNING...
+  Test suite test: PASS
+  Test suite logged to: dist/test/GCD-0.1.0-test.log
+  1 of 1 test suites (1 of 1 test cases) passed.
 
-Finished in 0.0010 seconds
-4 examples, 0 failures
-Test suite test: PASS
-Test suite logged to: dist/test/GCD-0.1.0-test.log
+$ cat dist/test/GCD-0.1.0-test.log
+
+  Test suite test: RUNNING...
+
+  euclid1
+    euclid1 1 1
+      returns 1
+    euclid1 371 379904
+      returns 371
+  euclid2
+    euclid2 1 1
+      returns 1
+    euclid2 371 379904
+      returns 371
+
+  Finished in 0.0010 seconds
+  4 examples, 0 failures
+  Test suite test: PASS
+  Test suite logged to: dist/test/GCD-0.1.0-test.log
 ```
 
 ## Benchmarks
 
-Benchmark of the two Euclid _Greatest Common Denominator_ algorithms.
+Benchmark the two Euclid _Greatest Common Denominator_ algorithms:
 
 ```bash
 $ stack bench
-GCD-0.1.0: benchmarks
-Running 1 benchmarks...
-Benchmark benchmark: RUNNING...
-benchmarking euclid 1 subtraction/317
-time                 8.013 ns   (7.992 ns .. 8.035 ns)
-                     1.000 R²   (0.999 R² .. 1.000 R²)
-mean                 8.002 ns   (7.977 ns .. 8.026 ns)
-std dev              77.61 ps   (62.01 ps .. 100.1 ps)
 
-benchmarking euclid 2 modulus/317
-time                 8.001 ns   (7.981 ns .. 8.022 ns)
-                     1.000 R²   (1.000 R² .. 1.000 R²)
-mean                 7.983 ns   (7.962 ns .. 8.003 ns)
-std dev              67.93 ps   (56.92 ps .. 83.74 ps)
+  GCD-0.1.0: benchmarks
+  Running 1 benchmarks...
+  Benchmark benchmark: RUNNING...
+  benchmarking euclid 1 subtraction/317
+  time                 8.013 ns   (7.992 ns .. 8.035 ns)
+                      1.000 R²   (0.999 R² .. 1.000 R²)
+  mean                 8.002 ns   (7.977 ns .. 8.026 ns)
+  std dev              77.61 ps   (62.01 ps .. 100.1 ps)
 
-Benchmark benchmark: FINISH
+  benchmarking euclid 2 modulus/317
+  time                 8.001 ns   (7.981 ns .. 8.022 ns)
+                      1.000 R²   (1.000 R² .. 1.000 R²)
+  mean                 7.983 ns   (7.962 ns .. 8.003 ns)
+  std dev              67.93 ps   (56.92 ps .. 83.74 ps)
+
+  Benchmark benchmark: FINISH
 ```
 
 ## Profiling Using GHC
@@ -81,13 +115,13 @@ The following shows how to profile this application using GHC:
 1. compile with profiling
 
 ```bash
-ghc -prof -fprof-auto -rtsopts app/Main.hs src/GCD.hs
+$ ghc -prof -fprof-auto -rtsopts app/Main.hs src/GCD.hs
 ```
 
 2. to profile run program with arguments:
 
 ```bash
-app/Main 371 379904 +RTS -p
+$ app/Main 371 379904 +RTS -p
 ```
 
 3. results are reported in `Main.prof`:
@@ -130,6 +164,33 @@ MAIN                 MAIN                  <built-in>                 118       
   main.v             Main                  app/Main.hs:23:19-40       241          1    0.0    0.0     0.0    0.0
 ```
 
+## Profiling Using ThreadScope
+
+Another useful tool for performance profiling is
+[ThreadScope](https://wiki.haskell.org/ThreadScope).
+
+1. compile with multi-threaded runtime:
+
+```bash
+$ ghc -threaded -eventlog -rtsopts --make app/Main.hs src/GCD.hs
+```
+
+2. execute program and generate a profile use the `-ls` flag after `+RTS`. 
+
+```bash
+$ app/Main 371 379904 +RTS -ls -N2
+```
+
+3. pass the profile into ThreadScope:
+
+```bash
+$ threadscope Main.eventlog
+```
+
+The following is example output for this process:
+
+![threadscope-main.png](./files/threadscope-main.png)
+
 ## Dependencies
 
 ### Install Dependencies
@@ -137,26 +198,28 @@ MAIN                 MAIN                  <built-in>                 118       
 Install test, benchmark frameworks and an external GCD library:
 
 ```bash
-cabal install hspec
-cabal install criterion
-cabal install --allow-newer besout-0.2.0.1
+$ cabal install hspec
+$ cabal install criterion
+$ cabal install --allow-newer besout-0.2.0.1
 ```
 
 ### List Dependencies
 
 ```bash
 $ stack list-dependencies
-GCD 0.1.0
-base 4.11.1.0
-ghc-prim 0.5.2.0
-integer-gmp 1.0.2.0
-rts 1.0
+
+  GCD 0.1.0
+  base 4.11.1.0
+  ghc-prim 0.5.2.0
+  integer-gmp 1.0.2.0
+  rts 1.0
 ```
 
 ## Project Information
 
 ```bash
 $ cabal info .
+
 * GCD-0.1.0        (program and library)
     Synopsis:      Greatest Common Denominator
     Homepage:      https://github.com/frankhjung/gcd#readme

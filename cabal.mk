@@ -1,8 +1,9 @@
 #!/usr/bin/env make
 
-TARGET = gcd
-SRCS = $(wildcard *.hs */*.hs)
-ARGS ?= -h
+TARGET	:= gcd
+SUBS	:= $(wildcard */)
+SRCS	:= $(wildcard $(addsuffix *.hs, $(SUBS)))
+ARGS	?= -h
 
 build:	check
 	@cabal build
@@ -12,11 +13,11 @@ all:	check build test bench doc tags
 
 .PHONY: style
 style:
-	@stylish-haskell -c .stylish-haskell.yaml -i $(SRCS)
+	-stylish-haskell -c .stylish-haskell.yaml -i $(SRCS)
 
 .PHONY: lint
 lint:
-	@hlint --color $(SRCS)
+	-hlint --color $(SRCS)
 
 .PHONY: check
 check:	lint style
@@ -53,7 +54,7 @@ copy:
 
 .PHONY: ghci
 ghci:
-	@ghci -Wno-type-defaults
+	-ghci -Wno-type-defaults
 
 .PHONY: clean
 clean:
@@ -61,4 +62,5 @@ clean:
 
 .PHONY: cleanall
 cleanall: clean
-	@$(RM) -rf */*.hi */*.o
+	@$(RM) -rf $(patsubst %.hs, %.hi, $(SRCS))
+	@$(RM) -rf $(patsubst %.hs, %.o, $(SRCS))

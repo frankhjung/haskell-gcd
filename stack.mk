@@ -56,3 +56,5 @@ clean:
 .PHONY: cleanall
 cleanall: clean
 	@$(RM) -rf .stack-work/
+	@$(RM) -rf $(patsubst %.hs, %.hi, $(SRCS))
+	@$(RM) -rf $(patsubst %.hs, %.o, $(SRCS))
