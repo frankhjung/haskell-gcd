@@ -1,1 +1,1 @@
-cabal.mk
+stack.mk
