@@ -39,7 +39,7 @@ tags:
 
 .PHONY: install
 install:
-	@stack install
+	@stack install --local-bin-path $(HOME)/bin
 
 .PHONY: doc
 doc:
