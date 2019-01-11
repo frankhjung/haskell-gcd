@@ -1,14 +1,24 @@
 #!/usr/bin/env make
 
-TARGET = gcd
-SRCS = $(wildcard *.hs */*.hs)
-ARGS ?= -h
+TARGET	:= gcd
+SRCS	:= $(wildcard *.hs */*.hs)
+ARGS	?= -h
 
+.default: build
+
+.PHONY: build
 build:	check
 	@stack build
 
 .PHONY: all
 all:	check build test bench doc tags
+
+.PHONY: check
+check:	tags lint style
+
+.PHONY: tags
+tags:
+	@hasktags --ctags $(SRCS)
 
 .PHONY: style
 style:
@@ -18,24 +28,17 @@ style:
 lint:
 	@hlint --color $(SRCS)
 
-.PHONY: check
-check:	lint style
-
 .PHONY: exec
 exec:	# Example:  make ARGS="112 12" exec
 	@stack exec $(TARGET) -- $(ARGS)
 
 .PHONY: test
 test:
-	@stack test
+	@stack test --coverage
 
 .PHONY: bench
 bench:
-	@stack bench
-
-.PHONY: tags
-tags:
-	@hasktags --ctags $(SRCS)
+	@stack bench --benchmark-arguments '-o .stack-work/benchmark.html'
 
 .PHONY: install
 install:
@@ -44,6 +47,13 @@ install:
 .PHONY: doc
 doc:
 	@stack haddock
+
+.PHONY: setup
+setup:
+	-stack setup
+	-stack build --dependencies-only --test --no-run-tests
+	-stack query
+	-stack ls dependencies
 
 .PHONY: ghci
 ghci:
