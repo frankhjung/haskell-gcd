@@ -1,0 +1,32 @@
+image:
+  name: haskell:8.2.2
+  entrypoint: [""]
+
+before_script:
+  - apt-get update -qq && apt-get install -y -qq hasktags hlint stylish-haskell
+
+stages:
+  - all
+
+variables:
+  STACK_ROOT: "${CI_PROJECT_DIR}/.stack"
+
+cache:
+  key: gcd-cache
+  paths:
+    - .stack
+    - .stack-work
+
+all:
+  stage: all
+  script:
+    - make clean setup
+    - make check build
+    - make test
+    - make bench
+    - make doc
+    - make exec
+  artifacts:
+    paths:
+      - .stack-work/dist
+      - .stack-work/install

@@ -11,7 +11,7 @@ build:	check
 	@stack build
 
 .PHONY: all
-all:	check build test bench doc tags
+all:	check build test bench doc
 
 .PHONY: check
 check:	tags lint style
@@ -28,10 +28,6 @@ style:
 lint:
 	@hlint --color $(SRCS)
 
-.PHONY: exec
-exec:	# Example:  make ARGS="112 12" exec
-	@stack exec $(TARGET) -- $(ARGS)
-
 .PHONY: test
 test:
 	@stack test --coverage
@@ -39,6 +35,10 @@ test:
 .PHONY: bench
 bench:
 	@stack bench --benchmark-arguments '-o .stack-work/benchmark.html'
+
+.PHONY: exec
+exec:	# Example:  make ARGS="112 12" exec
+	@stack exec $(TARGET) -- $(ARGS)
 
 .PHONY: install
 install:
