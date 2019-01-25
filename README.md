@@ -50,37 +50,40 @@ for you.
 Running tests using Cabal:
 
 ```
-$ make test
+$ stack test
 
-  Preprocessing library for GCD-0.1.0..
-  Building library for GCD-0.1.0..
-  Preprocessing test suite 'test' for GCD-0.1.0..
-  Building test suite 'test' for GCD-0.1.0..
-  Running 1 test suites...
-  Test suite test: RUNNING...
-  Test suite test: PASS
-  Test suite logged to: dist/test/GCD-0.1.0-test.log
-  1 of 1 test suites (1 of 1 test cases) passed.
+GCD-0.3.0: test (suite: test)
+            
+Progress 1/2: GCD-0.3.0
+euclid1
+  euclid1 1 1
+    returns 1
+  euclid1 371 379904
+    returns 371
+euclid2
+  euclid2 1 1
+    returns 1
+  euclid2 371 379904
+    returns 371
+besout
+  besout 1 1
+    returns 1
+  besout 371 379904
+    returns 371
 
-$ cat dist/test/GCD-0.1.0-test.log
-
-  Test suite test: RUNNING...
-
-  euclid1
-    euclid1 1 1
-      returns 1
-    euclid1 371 379904
-      returns 371
-  euclid2
-    euclid2 1 1
-      returns 1
-    euclid2 371 379904
-      returns 371
-
-  Finished in 0.0010 seconds
-  4 examples, 0 failures
-  Test suite test: PASS
-  Test suite logged to: dist/test/GCD-0.1.0-test.log
+Finished in 0.0014 seconds
+6 examples, 0 failures
+                       
+GCD-0.3.0: Test suite test passed
+Generating coverage report for GCD's test-suite "test"
+ 78% expressions used (29/37)
+ 33% boolean coverage (2/6)
+      20% guards (1/5), 1 always True, 2 always False, 1 unevaluated
+     100% 'if' conditions (1/1)
+     100% qualifiers (0/0)
+ 57% alternatives used (4/7)
+100% local declarations used (1/1)
+100% top-level declarations used (2/2)
 ```
 
 ## Benchmarks
@@ -90,22 +93,31 @@ Benchmark the two Euclid _Greatest Common Denominator_ algorithms:
 ```bash
 $ stack bench
 
-  GCD-0.1.0: benchmarks
-  Running 1 benchmarks...
-  Benchmark benchmark: RUNNING...
-  benchmarking euclid 1 subtraction/317
-  time                 8.013 ns   (7.992 ns .. 8.035 ns)
-                      1.000 R²   (0.999 R² .. 1.000 R²)
-  mean                 8.002 ns   (7.977 ns .. 8.026 ns)
-  std dev              77.61 ps   (62.01 ps .. 100.1 ps)
-
-  benchmarking euclid 2 modulus/317
-  time                 8.001 ns   (7.981 ns .. 8.022 ns)
-                      1.000 R²   (1.000 R² .. 1.000 R²)
-  mean                 7.983 ns   (7.962 ns .. 8.003 ns)
-  std dev              67.93 ps   (56.92 ps .. 83.74 ps)
-
-  Benchmark benchmark: FINISH
+GCD-0.3.0: benchmarks
+Running 1 benchmarks...
+Benchmark benchmark: RUNNING...
+benchmarking euclid1: /379904
+time                 7.376 ns   (7.351 ns .. 7.413 ns)
+                     1.000 R²   (0.999 R² .. 1.000 R²)
+mean                 7.397 ns   (7.370 ns .. 7.455 ns)
+std dev              127.8 ps   (84.63 ps .. 198.1 ps)
+variance introduced by outliers: 25% (moderately inflated)
+                       
+benchmarking euclid2: /379904
+time                 7.403 ns   (7.369 ns .. 7.445 ns)
+                     1.000 R²   (0.999 R² .. 1.000 R²)
+mean                 7.427 ns   (7.400 ns .. 7.497 ns)
+std dev              143.7 ps   (74.44 ps .. 282.4 ps)
+variance introduced by outliers: 30% (moderately inflated)
+                       
+benchmarking besout: /379904
+time                 7.391 ns   (7.368 ns .. 7.419 ns)
+                     1.000 R²   (1.000 R² .. 1.000 R²)
+mean                 7.403 ns   (7.381 ns .. 7.434 ns)
+std dev              83.06 ps   (61.34 ps .. 126.2 ps)
+variance introduced by outliers: 12% (moderately inflated)
+                       
+Benchmark benchmark: FINISH
 ```
 
 ## Profiling Using GHC
@@ -206,13 +218,13 @@ $ cabal install --allow-newer besout-0.2.0.1
 ### List Dependencies
 
 ```bash
-$ stack list-dependencies
+$ stack ls dependencies
 
-  GCD 0.1.0
-  base 4.11.1.0
-  ghc-prim 0.5.2.0
-  integer-gmp 1.0.2.0
-  rts 1.0
+GCD 0.3.0
+base 4.11.1.0
+ghc-prim 0.5.2.0
+integer-gmp 1.0.2.0
+rts 1.0
 ```
 
 ## Project Information
@@ -220,20 +232,25 @@ $ stack list-dependencies
 ```bash
 $ cabal info .
 
-* GCD-0.1.0        (program and library)
+* GCD-0.3.0              (program and library)
     Synopsis:      Greatest Common Denominator
+    Versions available: [ Not available from server ]
+    Versions installed: [ Not installed ]
     Homepage:      https://github.com/frankhjung/gcd#readme
+    Bug reports:   [ Not specified ]
     Description:   Test versions of Euclid's greatest common denominator
                    algorithm
     Category:      education
     License:       GPL-3
     Author:        Frank H Jung
-    Maintainer:    frankhjung at linux.com
+    Maintainer:    frankhjung@linux.com
     Source repo:   git@github.com:frankhjung/haskell-gcd.git
     Executables:   gcd
-    Dependencies:  base >=4.7 && <5, GCD -any, base >=4.7 && <5, GCD -any,
-                   hspec >=2.5, base >=4.7 && <5, GCD -any, criterion >=1.3,
-                   base >=4.7 && <5
+    Dependencies:  base >=4.11.1 && <4.12, GCD -any, base >=4.11.1 && <4.12,
+                   GCD -any, hspec >=2.5.6, besout ==0.2.0.1,
+                   base >=4.11.1 && <4.12, GCD -any, criterion >=1.4.1 && <1.6,
+                   besout -any, base >=4.11.1 && <4.12
     Cached:        Yes
-    Modules:       GCD
+    Modules:
+        GCD
 ```

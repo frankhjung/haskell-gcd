@@ -4,7 +4,7 @@
 
   Module      : GCD
   Description : Show greatest common denominator using Euclid's alogrithm.
-  Copyright   : © Frank Jung, 2018
+  Copyright   : © Frank Jung, 2018-2019
   License     : GPL-3
   Maintainer  : frankhjung@linux.com
   Stability   : experimental

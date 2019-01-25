@@ -1,5 +1,5 @@
 image:
-  name: haskell:8.2.2
+  name: haskell:8.4.4
   entrypoint: [""]
 
 before_script:
@@ -28,5 +28,6 @@ all:
     - make exec
   artifacts:
     paths:
+      - .stack-work/benchmark.html
       - .stack-work/dist
       - .stack-work/install

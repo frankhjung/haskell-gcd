@@ -1,69 +1,56 @@
 #!/usr/bin/env make
 
+.PHONY: build check tags style lint test exec bench doc install setup ghci clean cleanall
+
 TARGET	:= gcd
 SRCS	:= $(wildcard *.hs */*.hs)
 ARGS	?= -h
 
 .default: build
 
-.PHONY: build
 build:	check
 	@stack build
 
-.PHONY: all
-all:	check build test bench doc
+all:	check build test bench doc exec
 
-.PHONY: check
-check:	tags lint style
+check:	tags style lint
 
-.PHONY: tags
 tags:
-	@hasktags --ctags $(SRCS)
+	@hasktags --ctags --extendedctag $(SRCS)
 
-.PHONY: style
 style:
 	@stylish-haskell -c .stylish-haskell.yaml -i $(SRCS)
 
-.PHONY: lint
 lint:
-	@hlint --color $(SRCS)
+	@hlint $(SRCS)
 
-.PHONY: test
 test:
 	@stack test --coverage
 
-.PHONY: bench
-bench:
-	@stack bench --benchmark-arguments '-o .stack-work/benchmark.html'
-
-.PHONY: exec
 exec:	# Example:  make ARGS="112 12" exec
 	@stack exec $(TARGET) -- $(ARGS)
 
-.PHONY: install
-install:
-	@stack install --local-bin-path $(HOME)/bin
+bench:
+	@stack bench --benchmark-arguments '-o .stack-work/benchmark.html'
 
-.PHONY: doc
 doc:
 	@stack haddock
 
-.PHONY: setup
+install:
+	@stack install --local-bin-path $(HOME)/bin
+
 setup:
 	-stack setup
 	-stack build --dependencies-only --test --no-run-tests
 	-stack query
 	-stack ls dependencies
 
-.PHONY: ghci
 ghci:
 	@stack ghci --ghci-options -Wno-type-defaults
 
-.PHONY: clean
 clean:
 	@stack clean
 
-.PHONY: cleanall
 cleanall: clean
 	@$(RM) -rf .stack-work/
 	@$(RM) -rf $(patsubst %.hs, %.hi, $(SRCS))
