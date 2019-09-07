@@ -1,5 +1,5 @@
 name:               GCD
-version:            0.3.0
+version:            0.4.0
 synopsis:           Greatest Common Denominator
 description:        Test versions of Euclid's greatest common denominator algorithm
 homepage:           https://github.com/frankhjung/gcd#readme
@@ -24,24 +24,24 @@ executable gcd
   ghc-options:      -Wall
                     -threaded
   other-modules:    Paths_GCD
-  build-depends:    base >= 4.11.1 && < 4.12
+  build-depends:    base >= 4.12
                   , GCD
 
 library
-  default-language: Haskell2010
   hs-source-dirs:   src
+  default-language: Haskell2010
   exposed-modules:  GCD
   ghc-options:      -Wall
-  build-depends:    base >= 4.11.1 && < 4.12
+  build-depends:    base >= 4.12
 
 test-suite test
   hs-source-dirs:   test
   main-is:          Test.hs
   default-language: Haskell2010
   type:             exitcode-stdio-1.0
-  build-depends:    base >= 4.11.1 && < 4.12
-                  , besout == 0.2.0.1
-                  , hspec >= 2.5.6
+  build-depends:    base >= 4.12
+                  , besout >= 0.2
+                  , hspec >= 2.6.1 && <= 2.7.1
                   , GCD
   ghc-options:      -Wall
                     -threaded
@@ -51,8 +51,8 @@ benchmark benchmark
   main-is:          Bench.hs
   default-language: Haskell2010
   type:             exitcode-stdio-1.0
-  build-depends:    base >= 4.11.1 && < 4.12
-                  , besout
-                  , criterion >= 1.4.1 && < 1.6
+  build-depends:    base >= 4.12
+                  , besout >= 0.2
+                  , criterion >= 1.5.4.0 && <= 1.5.5.0
                   , GCD
 

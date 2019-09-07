@@ -1,9 +1,30 @@
-# Haskell Example Project
+# Haskell Greatest Common Denominator
 
-This is an example project to show how to:
+This is one of my early Haskell projects. I was using it to work out how to
+structure a project, what tools to use. Later, when Git pipelines became
+available, I explored how to use these to build the project.
 
-- lint, style and check source code
-- build using GNU Make using Cabal or Stack
+The code was not as important as the project structure. Professionally as an
+Developer + SCM + DevOps + Consultant I deal with enterprise projects with the
+following features:
+
+* code is version controlled
+* code is styled and formatted by tools
+* building code is controlled by a build system (Maven, Gradle, Make, Stack, etc)
+* there are unit tests
+* there are performance benchmarks
+* API documentation is included
+* documentation (this README, more often a wiki) is included
+
+Originally I was using Cabal, but found that Stack managed dependencies and
+project phases better. If you look at earlier commits you will see those
+attempts. Perhaps, you can show me where I went wrong and should have stuck with
+Cabal?
+
+In this project, I will show how to:
+
+- [lint](http://hackage.haskell.org/package/hlint), [style](https://hackage.haskell.org/package/stylish-haskell) source code
+- build using [GNU Make](https://www.gnu.org/software/make/) using [Stack](https://docs.haskellstack.org/en/stable/README/)
 - unit test with [HSpec](http://hackage.haskell.org/package/hspec)
 - benchmark with [Criterion](http://hackage.haskell.org/package/criterion)
 - document using [Haddock](http://hackage.haskell.org/package/haddock)
@@ -13,48 +34,56 @@ It uses a couple of Greatest Common Denominator (GCD) algorithms as examples for
 testing and benchmarking. The GCD algorithms are described
 [here](https://en.wikipedia.org/wiki/Euclidean_algorithm).
 
-## Build
+
+## Documentation
+
+API documentation is available from:
+
+* [GitHub Pages](https://frankhjung.github.io/haskell-gcd/)
+* [GitLab Pages](https://frankhjung1.gitlab.io/haskell-gcd)
+
+Documentation is produced using [Haddock](http://hackage.haskell.org/package/haddock).
+
+## Setup
 
 To prime environment with compiler, packages and dependencies, run the
-environment setup:
+environment setup (see [Makefile](./Makefile) `setup` goal for full details):
 
 ```bash
-$ stack update
-$ stack setup
-$ stack build
-$ cabal configure
-$ cabal build
+make setup
 ```
 
-This may not include the linter, styler and documentation tools.
-TODO - can we add this to stack.yaml as external dependencies?
+Stack uses Cabal under the covers but does more package management.
 
-Then build using [GNU Make](https://www.gnu.org/software/make/):
+
+## Build
+
+Use the make goal `build`:
 
 ```bash
-$ make -f stack.mk build
+make build
 ```
 
-Or
+For a rebuild of all targets run the `clean` goal first:
 
 ```bash
-$ make -f cabal.mk build
+make clean build
 ```
 
-Stack uses Cabal under the covers but does more package management. However,
-once Stack has installed required packages, then Cabal should happily compile
-for you.
 
 ## Tests
 
-Running tests using Cabal:
+Run the `test` goal:
+
+```bash
+make test
+```
+
+### Example
 
 ```
-$ stack test
+$ make test
 
-GCD-0.3.0: test (suite: test)
-            
-Progress 1/2: GCD-0.3.0
 euclid1
   euclid1 1 1
     returns 1
@@ -71,56 +100,56 @@ besout
   besout 371 379904
     returns 371
 
-Finished in 0.0014 seconds
+Finished in 0.0009 seconds
 6 examples, 0 failures
-                       
-GCD-0.3.0: Test suite test passed
-Generating coverage report for GCD's test-suite "test"
- 78% expressions used (29/37)
- 33% boolean coverage (2/6)
-      20% guards (1/5), 1 always True, 2 always False, 1 unevaluated
-     100% 'if' conditions (1/1)
-     100% qualifiers (0/0)
- 57% alternatives used (4/7)
-100% local declarations used (1/1)
-100% top-level declarations used (2/2)
 ```
 
-## Benchmarks
+
+## Benchmark
 
 Benchmark the two Euclid _Greatest Common Denominator_ algorithms:
 
 ```bash
-$ stack bench
+make bench
+```
 
-GCD-0.3.0: benchmarks
+### Example
+
+```
+$ make bench
+
+Registering library for GCD-0.4.0..
+GCD-0.4.0: benchmarks
 Running 1 benchmarks...
 Benchmark benchmark: RUNNING...
 benchmarking euclid1: /379904
-time                 7.376 ns   (7.351 ns .. 7.413 ns)
-                     1.000 R²   (0.999 R² .. 1.000 R²)
-mean                 7.397 ns   (7.370 ns .. 7.455 ns)
-std dev              127.8 ps   (84.63 ps .. 198.1 ps)
-variance introduced by outliers: 25% (moderately inflated)
-                       
-benchmarking euclid2: /379904
-time                 7.403 ns   (7.369 ns .. 7.445 ns)
-                     1.000 R²   (0.999 R² .. 1.000 R²)
-mean                 7.427 ns   (7.400 ns .. 7.497 ns)
-std dev              143.7 ps   (74.44 ps .. 282.4 ps)
-variance introduced by outliers: 30% (moderately inflated)
-                       
-benchmarking besout: /379904
-time                 7.391 ns   (7.368 ns .. 7.419 ns)
+time                 7.815 ns   (7.785 ns .. 7.843 ns)
                      1.000 R²   (1.000 R² .. 1.000 R²)
-mean                 7.403 ns   (7.381 ns .. 7.434 ns)
-std dev              83.06 ps   (61.34 ps .. 126.2 ps)
-variance introduced by outliers: 12% (moderately inflated)
-                       
+mean                 7.846 ns   (7.803 ns .. 7.912 ns)
+std dev              181.2 ps   (115.0 ps .. 293.9 ps)
+variance introduced by outliers: 38% (moderately inflated)
+
+benchmarking euclid2: /379904
+time                 7.761 ns   (7.740 ns .. 7.784 ns)
+                     1.000 R²   (1.000 R² .. 1.000 R²)
+mean                 7.790 ns   (7.757 ns .. 7.862 ns)
+std dev              156.1 ps   (90.71 ps .. 307.2 ps)
+variance introduced by outliers: 31% (moderately inflated)
+
+benchmarking besout: /379904
+time                 7.779 ns   (7.732 ns .. 7.834 ns)
+                     1.000 R²   (0.999 R² .. 1.000 R²)
+mean                 7.804 ns   (7.761 ns .. 7.874 ns)
+std dev              184.9 ps   (117.5 ps .. 350.0 ps)
+variance introduced by outliers: 39% (moderately inflated)
+
 Benchmark benchmark: FINISH
 ```
 
-## Profiling Using GHC
+
+## Profiling
+
+### Using GHC
 
 The following shows how to profile this application using GHC:
 
@@ -176,7 +205,8 @@ MAIN                 MAIN                  <built-in>                 118       
   main.v             Main                  app/Main.hs:23:19-40       241          1    0.0    0.0     0.0    0.0
 ```
 
-## Profiling Using ThreadScope
+
+### Using ThreadScope
 
 Another useful tool for performance profiling is
 [ThreadScope](https://wiki.haskell.org/ThreadScope).
@@ -187,7 +217,7 @@ Another useful tool for performance profiling is
 $ ghc -threaded -eventlog -rtsopts --make app/Main.hs src/GCD.hs
 ```
 
-2. execute program and generate a profile use the `-ls` flag after `+RTS`. 
+2. execute program and generate a profile use the `-ls` flag after `+RTS`.
 
 ```bash
 $ app/Main 371 379904 +RTS -ls -N2
@@ -203,36 +233,13 @@ The following is example output for this process:
 
 ![threadscope-main.png](./files/threadscope-main.png)
 
-## Dependencies
-
-### Install Dependencies
-
-Install test, benchmark frameworks and an external GCD library:
-
-```bash
-$ cabal install hspec
-$ cabal install criterion
-$ cabal install --allow-newer besout-0.2.0.1
-```
-
-### List Dependencies
-
-```bash
-$ stack ls dependencies
-
-GCD 0.3.0
-base 4.11.1.0
-ghc-prim 0.5.2.0
-integer-gmp 1.0.2.0
-rts 1.0
-```
 
 ## Project Information
 
 ```bash
 $ cabal info .
 
-* GCD-0.3.0              (program and library)
+* GCD-0.4.0              (program and library)
     Synopsis:      Greatest Common Denominator
     Versions available: [ Not available from server ]
     Versions installed: [ Not installed ]
@@ -243,14 +250,15 @@ $ cabal info .
     Category:      education
     License:       GPL-3
     Author:        Frank H Jung
-    Maintainer:    frankhjung@linux.com
+    Maintainer:    frankhjung at linux.com
     Source repo:   git@github.com:frankhjung/haskell-gcd.git
     Executables:   gcd
-    Dependencies:  base >=4.11.1 && <4.12, GCD -any, base >=4.11.1 && <4.12,
-                   GCD -any, hspec >=2.5.6, besout ==0.2.0.1,
-                   base >=4.11.1 && <4.12, GCD -any, criterion >=1.4.1 && <1.6,
-                   besout -any, base >=4.11.1 && <4.12
+    Dependencies:  base >=4.12, GCD -any, base >=4.12, GCD -any,
+                   hspec >=2.6.1 && <=2.7.1, besout >=0.2, base >=4.12,
+                   GCD -any, criterion >=1.5.4.0 && <=1.5.5.0, besout >=0.2,
+                   base >=4.12
     Cached:        Yes
     Modules:
         GCD
+
 ```
