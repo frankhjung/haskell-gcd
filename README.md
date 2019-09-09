@@ -40,6 +40,8 @@ testing and benchmarking. The GCD algorithms are described
 API documentation is available from:
 
 * [GitHub Pages](https://frankhjung.github.io/haskell-gcd/)
+	* [API](https://frankhjung.github.io/haskell-gcd/index.html)
+	* [Test Coverage](https://frankhjung.github.io/haskell-gcd/gcd/test/hpc_index.html)
 * [GitLab Pages](https://frankhjung1.gitlab.io/haskell-gcd)
 
 Documentation is produced using [Haddock](http://hackage.haskell.org/package/haddock).

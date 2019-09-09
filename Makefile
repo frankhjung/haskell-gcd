@@ -28,14 +28,15 @@ build:
 test:
 	@stack test
 
+doc:
+	@stack test --coverage
+	@stack haddock --fast
+
 exec:	# Example:  make ARGS="112 12" exec
 	@stack exec $(TARGET) -- $(ARGS)
 
 bench:
 	@stack bench --benchmark-arguments '-o .stack-work/benchmark.html'
-
-doc:
-	@stack haddock --fast --coverage
 
 install:
 	@stack install --local-bin-path $(HOME)/bin
@@ -46,7 +47,7 @@ setup:
 	@stack build
 	@stack query
 	@stack ls dependencies
-	#-stack exec ghc-pkg -- list
+	#stack exec ghc-pkg -- list
 
 ghci:
 	@stack ghci --ghci-options -Wno-type-defaults

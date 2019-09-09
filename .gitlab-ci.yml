@@ -3,7 +3,7 @@ stages:
   - deploy
 
 cache:
-  key: $CI_COMMIT_REF_NAME
+  key: ${CI_COMMIT_REF_NAME}
   paths:
     - .stack
     - .stack-work
@@ -16,7 +16,7 @@ build:
   except:
     - tags
   image:
-    name: frankhjung/haskell:latest
+    name: frankhjung/haskell:8.6.5
     entrypoint: [""]
   stage: build
   script:
@@ -29,6 +29,7 @@ pages:
   stage: deploy
   script:
     - mkdir -p public
+    - cp -pr .stack-work/install/x86_64-linux/*/*/hpc/* public/
     - cp -pr .stack-work/dist/x86_64-linux/Cabal-*/doc/html/gcd/* public/
   artifacts:
     paths:
