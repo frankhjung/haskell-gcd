@@ -2,7 +2,7 @@
 
 module Main (main) where
 
-import           GCD            (euclid1, euclid2)
+import           Gcd            (euclid1, euclid2)
 
 import           Bezout         (besout)
 import           Criterion.Main (bench, bgroup, defaultMain, whnf)

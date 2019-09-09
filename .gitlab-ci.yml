@@ -13,6 +13,8 @@ variables:
   STACK_ROOT: "${CI_PROJECT_DIR}/.stack"
 
 build:
+  except:
+    - tags
   image:
     name: frankhjung/haskell:latest
     entrypoint: [""]
@@ -21,11 +23,13 @@ build:
     - make setup clean all
 
 pages:
+  only:
+    - master
   image: alpine:latest
   stage: deploy
   script:
     - mkdir -p public
-    - cp -pr .stack-work/dist/x86_64-linux/Cabal-*/doc/html/GCD/* public/
+    - cp -pr .stack-work/dist/x86_64-linux/Cabal-*/doc/html/gcd/* public/
   artifacts:
     paths:
     - public

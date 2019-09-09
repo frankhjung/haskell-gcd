@@ -6,10 +6,8 @@ TARGET	:= gcd
 SRCS	:= $(wildcard *.hs */*.hs)
 ARGS	?= -h
 
-.default: build
-
-build:	check
-	@stack build --pedantic --no-test --ghc-options='-O2'
+.PHONY:	default
+default: check build test
 
 all:	check build test bench doc exec
 
@@ -24,6 +22,9 @@ style:
 lint:
 	@hlint $(SRCS)
 
+build:
+	@stack build
+
 test:
 	@stack test
 
@@ -34,18 +35,17 @@ bench:
 	@stack bench --benchmark-arguments '-o .stack-work/benchmark.html'
 
 doc:
-	@stack test --ghc-options -fhpc --coverage
-	@stack haddock
+	@stack haddock --fast --coverage
 
 install:
 	@stack install --local-bin-path $(HOME)/bin
 
 setup:
-	-stack update
-	-stack setup
-	-stack build --pedantic --no-test --ghc-options='-O2'
-	-stack query
-	-stack ls dependencies
+	@stack update
+	@stack setup
+	@stack build
+	@stack query
+	@stack ls dependencies
 	#-stack exec ghc-pkg -- list
 
 ghci:
@@ -53,6 +53,7 @@ ghci:
 
 clean:
 	@stack clean
+	@$(RM) -rf *.tix
 
 cleanall: clean
 	@$(RM) -rf .stack-work/

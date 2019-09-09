@@ -2,7 +2,7 @@
 
 {-|
 
-  Module      : GCD
+  Module      : Gcd
   Description : Show greatest common denominator using Euclid's alogrithm.
   Copyright   : © Frank Jung, 2018-2019
   License     : GPL-3
@@ -12,7 +12,7 @@
 
 -}
 
-module GCD (euclid1, euclid2) where
+module Gcd (euclid1, euclid2) where
 
 -- | Greatest Common Denominator (for numbers greater than 0)
 

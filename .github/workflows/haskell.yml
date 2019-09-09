@@ -1,6 +1,9 @@
 name: haskell gcd
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
 
@@ -38,7 +41,7 @@ jobs:
     - name: copy
       run: |
         mkdir -p public
-        cp -pr .stack-work/dist/x86_64-linux/Cabal-*/doc/html/GCD/* public/
+        cp -pr .stack-work/dist/x86_64-linux/Cabal-*/doc/html/gcd/* public/
 
     - name: publish
       uses: crazy-max/ghaction-github-pages@v0.4.0

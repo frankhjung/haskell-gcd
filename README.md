@@ -1,7 +1,7 @@
 # Haskell Greatest Common Denominator
 
 This is one of my early Haskell projects. I was using it to work out how to
-structure a project, what tools to use. Later, when Git pipelines became
+structure a project and on what tools to use. Later, when Git pipelines became
 available, I explored how to use these to build the project.
 
 The code was not as important as the project structure. Professionally as an
@@ -10,25 +10,25 @@ following features:
 
 * code is version controlled
 * code is styled and formatted by tools
-* building code is controlled by a build system (Maven, Gradle, Make, Stack, etc)
+* building code is controlled by a build system (e.g. Maven, Gradle, Make, Stack, etc)
 * there are unit tests
 * there are performance benchmarks
 * API documentation is included
-* documentation (this README, more often a wiki) is included
+* documentation (this [README](README.md), more often a wiki)
 
-Originally I was using Cabal, but found that Stack managed dependencies and
-project phases better. If you look at earlier commits you will see those
-attempts. Perhaps, you can show me where I went wrong and should have stuck with
-Cabal?
+Originally I was using [Cabal](https://www.haskell.org/cabal/), but found that
+[Stack](https://docs.haskellstack.org) managed dependencies and project phases
+better. If you look at earlier commits you will see those attempts. Perhaps, you
+can show me where I went wrong and should have stuck with Cabal?
 
 In this project, I will show how to:
 
-- [lint](http://hackage.haskell.org/package/hlint), [style](https://hackage.haskell.org/package/stylish-haskell) source code
-- build using [GNU Make](https://www.gnu.org/software/make/) using [Stack](https://docs.haskellstack.org/en/stable/README/)
-- unit test with [HSpec](http://hackage.haskell.org/package/hspec)
-- benchmark with [Criterion](http://hackage.haskell.org/package/criterion)
-- document using [Haddock](http://hackage.haskell.org/package/haddock)
-- profile using [GHC](https://www.haskell.org/ghc/)
+* [lint](http://hackage.haskell.org/package/hlint) and [style](https://hackage.haskell.org/package/stylish-haskell) source code
+* build using [GNU Make](https://www.gnu.org/software/make/) using [Stack](https://docs.haskellstack.org)
+* unit test with [HSpec](http://hackage.haskell.org/package/hspec)
+* benchmark with [Criterion](http://hackage.haskell.org/package/criterion)
+* document using [Haddock](http://hackage.haskell.org/package/haddock)
+* profile using [GHC](https://www.haskell.org/ghc/)
 
 It uses a couple of Greatest Common Denominator (GCD) algorithms as examples for
 testing and benchmarking. The GCD algorithms are described
@@ -44,10 +44,11 @@ API documentation is available from:
 
 Documentation is produced using [Haddock](http://hackage.haskell.org/package/haddock).
 
+
 ## Setup
 
 To prime environment with compiler, packages and dependencies, run the
-environment setup (see [Makefile](./Makefile) `setup` goal for full details):
+environment setup (see [Makefile](Makefile) `setup` goal for full details):
 
 ```bash
 make setup
@@ -118,33 +119,36 @@ make bench
 ```
 $ make bench
 
-Registering library for GCD-0.4.0..
-GCD-0.4.0: benchmarks
+gcd-0.5.0: benchmarks
 Running 1 benchmarks...
 Benchmark benchmark: RUNNING...
 benchmarking euclid1: /379904
-time                 7.815 ns   (7.785 ns .. 7.843 ns)
+time                 14.61 ns   (14.52 ns .. 14.71 ns)
                      1.000 R²   (1.000 R² .. 1.000 R²)
-mean                 7.846 ns   (7.803 ns .. 7.912 ns)
-std dev              181.2 ps   (115.0 ps .. 293.9 ps)
-variance introduced by outliers: 38% (moderately inflated)
+mean                 14.65 ns   (14.56 ns .. 14.78 ns)
+std dev              352.9 ps   (244.3 ps .. 579.8 ps)
+variance introduced by outliers: 39% (moderately inflated)
 
 benchmarking euclid2: /379904
-time                 7.761 ns   (7.740 ns .. 7.784 ns)
+time                 14.56 ns   (14.48 ns .. 14.64 ns)
                      1.000 R²   (1.000 R² .. 1.000 R²)
-mean                 7.790 ns   (7.757 ns .. 7.862 ns)
-std dev              156.1 ps   (90.71 ps .. 307.2 ps)
-variance introduced by outliers: 31% (moderately inflated)
+mean                 14.56 ns   (14.50 ns .. 14.67 ns)
+std dev              272.8 ps   (177.3 ps .. 460.6 ps)
+variance introduced by outliers: 28% (moderately inflated)
 
 benchmarking besout: /379904
-time                 7.779 ns   (7.732 ns .. 7.834 ns)
-                     1.000 R²   (0.999 R² .. 1.000 R²)
-mean                 7.804 ns   (7.761 ns .. 7.874 ns)
-std dev              184.9 ps   (117.5 ps .. 350.0 ps)
-variance introduced by outliers: 39% (moderately inflated)
+time                 14.50 ns   (14.45 ns .. 14.55 ns)
+                     1.000 R²   (1.000 R² .. 1.000 R²)
+mean                 14.55 ns   (14.49 ns .. 14.64 ns)
+std dev              238.7 ps   (173.3 ps .. 342.4 ps)
+variance introduced by outliers: 22% (moderately inflated)
 
 Benchmark benchmark: FINISH
 ```
+
+### Report
+
+* [Benchmark Report](files/benchmark.html)
 
 
 ## Profiling
@@ -156,13 +160,13 @@ The following shows how to profile this application using GHC:
 1. compile with profiling
 
 ```bash
-$ ghc -prof -fprof-auto -rtsopts app/Main.hs src/GCD.hs
+ghc -prof -fprof-auto -rtsopts app/Main.hs src/GCD.hs
 ```
 
 2. to profile run program with arguments:
 
 ```bash
-$ app/Main 371 379904 +RTS -p
+app/Main 371 379904 +RTS -p
 ```
 
 3. results are reported in `Main.prof`:
@@ -184,7 +188,7 @@ main        Main             app/Main.hs:(19,1)-(24,25)    0.0   12.0
 main.(...)  Main             app/Main.hs:23:19-40          0.0    8.5
 
 
-                                                                                         individual      inherited
+
 COST CENTRE          MODULE                SRC                        no.     entries  %time %alloc   %time %alloc
 
 MAIN                 MAIN                  <built-in>                 118          0    0.0    0.6   100.0  100.0
@@ -200,7 +204,7 @@ MAIN                 MAIN                  <built-in>                 118       
   euclid1            GCD                   src/GCD.hs:(21,1)-(25,44)  238       1024  100.0   43.6   100.0   43.6
   euclid2            GCD                   src/GCD.hs:(29,1)-(32,41)  242          2    0.0    0.1     0.0    0.1
    euclid2.remainder GCD                   src/GCD.hs:32:21-41        243          2    0.0    0.0     0.0    0.0
-  main.(...)         Main                  app/Main.hs:23:19-40       240          1    0.0    8.5     0.0    8.5
+  eain.(...)         Main                  app/Main.hs:23:19-40       240          1    0.0    8.5     0.0    8.5
   main.u             Main                  app/Main.hs:23:19-40       239          1    0.0    0.0     0.0    0.0
   main.v             Main                  app/Main.hs:23:19-40       241          1    0.0    0.0     0.0    0.0
 ```
@@ -214,32 +218,32 @@ Another useful tool for performance profiling is
 1. compile with multi-threaded runtime:
 
 ```bash
-$ ghc -threaded -eventlog -rtsopts --make app/Main.hs src/GCD.hs
+ghc -threaded -eventlog -rtsopts --make app/Main.hs src/GCD.hs
 ```
 
 2. execute program and generate a profile use the `-ls` flag after `+RTS`.
 
 ```bash
-$ app/Main 371 379904 +RTS -ls -N2
+app/Main 371 379904 +RTS -ls -N2
 ```
 
 3. pass the profile into ThreadScope:
 
 ```bash
-$ threadscope Main.eventlog
+threadscope Main.eventlog
 ```
 
 The following is example output for this process:
 
-![threadscope-main.png](./files/threadscope-main.png)
+![threadscope-main.png](files/threadscope-main.png)
 
 
 ## Project Information
 
-```bash
+```
 $ cabal info .
 
-* GCD-0.4.0              (program and library)
+* gcd-0.5.0        (program and library)
     Synopsis:      Greatest Common Denominator
     Versions available: [ Not available from server ]
     Versions installed: [ Not installed ]
@@ -250,15 +254,14 @@ $ cabal info .
     Category:      education
     License:       GPL-3
     Author:        Frank H Jung
-    Maintainer:    frankhjung at linux.com
+    Maintainer:    frankhjung@linux.com
     Source repo:   git@github.com:frankhjung/haskell-gcd.git
     Executables:   gcd
-    Dependencies:  base >=4.12, GCD -any, base >=4.12, GCD -any,
-                   hspec >=2.6.1 && <=2.7.1, besout >=0.2, base >=4.12,
-                   GCD -any, criterion >=1.5.4.0 && <=1.5.5.0, besout >=0.2,
-                   base >=4.12
+    Dependencies:  base -any, gcd -any, base -any, gcd -any, hspec -any,
+                   besout -any, base -any, gcd -any, criterion -any,
+                   besout -any, base -any
     Cached:        Yes
     Modules:
-        GCD
+        Gcd
 
 ```

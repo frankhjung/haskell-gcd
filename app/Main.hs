@@ -3,9 +3,11 @@ module Main where
 import           System.Environment (getArgs)
 
 import           Data.Version       (showVersion)
-import           GCD                (euclid1, euclid2)
-import           Paths_GCD          (version)
+import           Gcd                (euclid1, euclid2)
+import           Paths_gcd          (version)
 
+-- | MAIN
+--
 -- Read two numbers from command line to evaluate their greatest common
 -- denominator.
 -- Prints out results from both algorithms: euclid1 and euclid2
