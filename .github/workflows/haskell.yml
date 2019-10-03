@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - 'feature/**'
 
 jobs:
 
@@ -20,9 +21,7 @@ jobs:
         fetch-depth: 1
 
     - name: stack
-      run: |
-        curl -sSL https://get.haskellstack.org/ | sh
-        stack setup
+      run: stack setup
 
     - name: build
       run: stack build
