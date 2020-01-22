@@ -1,8 +1,7 @@
-resolver: lts-13.19
 arch: x86_64
 system-ghc: true
-ghc-options:
-  $locals: -Wall -O2 -fhpc
+resolver: lts-13.25
 allow-newer: true
+flags: {}
 packages: ['.']
 extra-deps: ['besout-0.2.0.1']
