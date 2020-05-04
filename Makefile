@@ -44,7 +44,7 @@ install:
 setup:
 	@stack update
 	@stack setup
-	#stack build
+	@stack build
 	@stack query
 	@stack ls dependencies
 	#stack exec ghc-pkg -- list
@@ -57,6 +57,7 @@ clean:
 	@$(RM) -rf *.tix
 
 cleanall: clean
+	@stack clean --full
 	@$(RM) -rf .stack-work/
 	@$(RM) -rf $(patsubst %.hs, %.hi, $(SRCS))
 	@$(RM) -rf $(patsubst %.hs, %.o, $(SRCS))

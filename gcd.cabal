@@ -1,5 +1,5 @@
 name:               gcd
-version:            0.6.0
+version:            0.7.0
 synopsis:           Greatest Common Denominator
 description:        Test versions of Euclid's greatest common denominator algorithm
 homepage:           https://github.com/frankhjung/gcd#readme

@@ -3,9 +3,8 @@ stages:
   - deploy
 
 variables:
-  TARGET: gcd
   RTSOPTS: "+RTS -N1"
-  STACK_ROOT: "${CI_PROJECT_DIR}/.stack"
+  STACK_ROOT: ${CI_PROJECT_DIR}/.stack
 
 build:
   except:
@@ -17,8 +16,9 @@ build:
   script:
     - make setup clean all
     - mkdir -p public
-    - cp -pr .stack-work/install/x86_64-linux/lts-*/*/hpc/* public/
-    - cp -pr .stack-work/dist/x86_64-linux/Cabal-*/doc/html/${TARGET}/* public/
+    - cp -p .stack-work/benchmark.html public/
+    - cp -fpr $(find .stack-work/install -type d -name hpc) public/
+    - cp -fpr $(find .stack-work/dist -type d -name html) public/
   artifacts:
     paths:
       - public
