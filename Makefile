@@ -23,14 +23,14 @@ lint:
 	@hlint $(SRCS)
 
 build:
-	@stack build
+	@stack build --pedantic --no-test
 
 test:
 	@stack test
 
 doc:
-	@stack test --coverage
-	@stack haddock --fast
+	#stack test --coverage
+	@stack haddock
 
 exec:	# Example:  make ARGS="112 12" exec
 	@stack exec $(TARGET) -- $(ARGS)

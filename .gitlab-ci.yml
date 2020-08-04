@@ -1,3 +1,5 @@
+---
+
 stages:
   - build
   - deploy
@@ -14,10 +16,10 @@ build:
     entrypoint: [""]
   stage: build
   script:
-    - make setup clean all
+    - make setup clean check build build test doc exec
     - mkdir -p public
-    - cp -p .stack-work/benchmark.html public/
-    - cp -fpr $(find .stack-work/install -type d -name hpc) public/
+    # cp -p .stack-work/benchmark.html public/
+    # cp -fpr $(find .stack-work/install -type d -name hpc) public/
     - cp -fpr $(find .stack-work/dist -type d -name html) public/
   artifacts:
     paths:
@@ -40,5 +42,4 @@ pages:
     - build
   artifacts:
     paths:
-    - public
-
+      - public
