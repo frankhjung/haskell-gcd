@@ -6,6 +6,7 @@
 *.eventlog
 *.hi
 *.hp
+*.lock
 *.log
 *.o
 *.prof
