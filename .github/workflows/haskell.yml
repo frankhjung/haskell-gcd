@@ -4,13 +4,14 @@ name: haskell gcd
 
 on:
   push:
-    branches:
-      - master
-      - 'feature/**'
+  check_run:
+    types: [rerequested, requested_action]
 
 jobs:
 
   build:
+
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
 
     runs-on: ubuntu-latest
 
@@ -22,28 +23,42 @@ jobs:
           ref: refs/heads/master
           fetch-depth: 1
 
+      - name: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            .stack/
+            .stack-work/
+          key: $GITHUB_REF
+
       - name: stack
-        run: stack setup
+        run: |
+          stack setup
+          stack update
+          stack path
+          stack query
+          stack ls dependencies
+          cabal check
 
       - name: build
-        run: stack build
+        run: stack build --no-test
 
       - name: test
         run: stack test
 
+      - name: bench
+        run: stack bench --benchmark-arguments '-o .stack-work/benchmark.html'
+
+      - name: documentation
+        run: stack haddock
+
       - name: exec
         run: stack exec gcd -- 112 12   # expect 4 4
 
-      - name: documentation
-        run: |
-          stack test --coverage
-          stack haddock --fast
-
       - name: copy
         run: |
-          mkdir -p public
-          cp -pr .stack-work/install/x86_64-linux/*/*/hpc/* public/
-          cp -pr .stack-work/dist/x86_64-linux/Cabal-*/doc/html/gcd/* public/
+          mv $(stack path --local-doc-root)/gcd*/ public/
+          cp -fp .stack-work/benchmark.html public/
 
       - name: publish
         uses: crazy-max/ghaction-github-pages@v0.4.0

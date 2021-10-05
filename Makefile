@@ -26,10 +26,9 @@ build:
 	@stack build --no-test
 
 test:
-	@stack test
+	@stack test --coverage
 
 doc:
-	#stack test --coverage
 	@stack haddock
 
 exec:	# Example:  make ARGS="112 12" exec

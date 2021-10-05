@@ -24,4 +24,5 @@ dist
 dist-*
 gcd.lkshs
 gcd.lkshw
+public/
 tags

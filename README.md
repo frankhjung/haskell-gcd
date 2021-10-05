@@ -34,18 +34,16 @@ It uses a couple of Greatest Common Denominator (GCD) algorithms as examples for
 testing and benchmarking. The GCD algorithms are described
 [here](https://en.wikipedia.org/wiki/Euclidean_algorithm).
 
-
 ## Documentation
 
 API documentation is available from:
 
 * [GitHub Pages](https://frankhjung.github.io/haskell-gcd/)
-	* [API](https://frankhjung.github.io/haskell-gcd/index.html)
-	* [Test Coverage](https://frankhjung.github.io/haskell-gcd/gcd/test/hpc_index.html)
+	* [API](https://frankhjung.github.io/haskell-gcd/)
+	* [Benchmark](https://frankhjung.github.io/haskell-gcd/benchmark.html)
 * [GitLab Pages](https://frankhjung1.gitlab.io/haskell-gcd)
 
 Documentation is produced using [Haddock](http://hackage.haskell.org/package/haddock).
-
 
 ## Setup
 
@@ -57,7 +55,6 @@ make setup
 ```
 
 Stack uses Cabal under the covers but does more package management.
-
 
 ## Build
 
@@ -73,7 +70,6 @@ For a rebuild of all targets run the `clean` goal first:
 make clean build
 ```
 
-
 ## Tests
 
 Run the `test` goal:
@@ -82,10 +78,11 @@ Run the `test` goal:
 make test
 ```
 
-### Example
+### Example - test
 
-```
+```text
 $ make test
+gcd> test (suite: test)
 
 euclid1
   euclid1 1 1
@@ -97,16 +94,15 @@ euclid2
     returns 1
   euclid2 371 379904
     returns 371
-besout
-  besout 1 1
+gcd
+  gcd 1 1
     returns 1
-  besout 371 379904
+  gcd 371 379904
     returns 371
 
 Finished in 0.0009 seconds
 6 examples, 0 failures
 ```
-
 
 ## Benchmark
 
@@ -116,34 +112,32 @@ Benchmark the two Euclid _Greatest Common Denominator_ algorithms:
 make bench
 ```
 
-### Example
+### Example - performance benchmark
 
-```
+```text
 $ make bench
-
-gcd-0.5.0: benchmarks
+gcd> benchmarks
 Running 1 benchmarks...
 Benchmark benchmark: RUNNING...
 benchmarking euclid1: /379904
-time                 14.61 ns   (14.52 ns .. 14.71 ns)
-                     1.000 R²   (1.000 R² .. 1.000 R²)
-mean                 14.65 ns   (14.56 ns .. 14.78 ns)
-std dev              352.9 ps   (244.3 ps .. 579.8 ps)
-variance introduced by outliers: 39% (moderately inflated)
+time                 8.776 ns   (8.709 ns .. 8.840 ns)
+                     1.000 R²   (0.999 R² .. 1.000 R²)
+mean                 8.754 ns   (8.706 ns .. 8.870 ns)
+std dev              223.8 ps   (113.2 ps .. 407.5 ps)
+variance introduced by outliers: 42% (moderately inflated)
 
 benchmarking euclid2: /379904
-time                 14.56 ns   (14.48 ns .. 14.64 ns)
-                     1.000 R²   (1.000 R² .. 1.000 R²)
-mean                 14.56 ns   (14.50 ns .. 14.67 ns)
-std dev              272.8 ps   (177.3 ps .. 460.6 ps)
-variance introduced by outliers: 28% (moderately inflated)
+time                 8.772 ns   (8.689 ns .. 8.864 ns)
+                     0.999 R²   (0.999 R² .. 1.000 R²)
+mean                 8.737 ns   (8.699 ns .. 8.820 ns)
+std dev              181.5 ps   (88.17 ps .. 300.4 ps)
+variance introduced by outliers: 33% (moderately inflated)
 
-benchmarking besout: /379904
-time                 14.50 ns   (14.45 ns .. 14.55 ns)
+benchmarking gcd: /379904
+time                 8.676 ns   (8.669 ns .. 8.683 ns)
                      1.000 R²   (1.000 R² .. 1.000 R²)
-mean                 14.55 ns   (14.49 ns .. 14.64 ns)
-std dev              238.7 ps   (173.3 ps .. 342.4 ps)
-variance introduced by outliers: 22% (moderately inflated)
+mean                 8.676 ns   (8.670 ns .. 8.685 ns)
+std dev              23.67 ps   (18.23 ps .. 31.02 ps)
 
 Benchmark benchmark: FINISH
 ```
@@ -151,7 +145,6 @@ Benchmark benchmark: FINISH
 ### Report
 
 * [Benchmark Report](files/benchmark.html)
-
 
 ## Profiling
 
@@ -161,9 +154,9 @@ The following shows how to profile this application using GHC:
 
 1. compile with profiling
 
-```bash
-ghc -prof -fprof-auto -rtsopts app/Main.hs src/GCD.hs
-```
+  ```bash
+  ghc -prof -fprof-auto -rtsopts app/Main.hs src/GCD.hs
+  ```
 
 2. to profile run program with arguments:
 
@@ -173,7 +166,7 @@ app/Main 371 379904 +RTS -p
 
 3. results are reported in `Main.prof`:
 
-```
+```text
 Fri Jul 27 23:05 2018 Time and Allocation Profiling Report  (Final)
 
    Main +RTS -p -RTS 371 379904
@@ -188,7 +181,6 @@ CAF         GHC.IO.Handle.FD <entire-module>               0.0   30.8
 CAF         GHC.IO.Encoding  <entire-module>               0.0    2.9
 main        Main             app/Main.hs:(19,1)-(24,25)    0.0   12.0
 main.(...)  Main             app/Main.hs:23:19-40          0.0    8.5
-
 
 
 COST CENTRE          MODULE                SRC                        no.     entries  %time %alloc   %time %alloc
@@ -211,7 +203,6 @@ MAIN                 MAIN                  <built-in>                 118       
   main.v             Main                  app/Main.hs:23:19-40       241          1    0.0    0.0     0.0    0.0
 ```
 
-
 ### Using ThreadScope
 
 Another useful tool for performance profiling is
@@ -223,7 +214,7 @@ Another useful tool for performance profiling is
 ghc -threaded -eventlog -rtsopts --make app/Main.hs src/GCD.hs
 ```
 
-2. execute program and generate a profile use the `-ls` flag after `+RTS`.
+2. execute program and generate a profile use the `-ls` flag after `+RTS`
 
 ```bash
 app/Main 371 379904 +RTS -ls -N2
@@ -235,17 +226,17 @@ app/Main 371 379904 +RTS -ls -N2
 threadscope Main.eventlog
 ```
 
-The following is example output for this process:
+Here is an example of the report:
 
 ![threadscope-main.png](files/threadscope-main.png)
 
-
 ## Project Information
 
-```
+```text
 $ cabal info .
-
-* gcd-0.5.0        (program and library)
+Warning: The package list for 'hackage.haskell.org' is 25 days old.
+Run 'cabal update' to get the latest list of available packages.
+* gcd-0.9.0              (program and library)
     Synopsis:      Greatest Common Denominator
     Versions available: [ Not available from server ]
     Versions installed: [ Not installed ]
@@ -259,11 +250,10 @@ $ cabal info .
     Maintainer:    frankhjung@linux.com
     Source repo:   git@github.com:frankhjung/haskell-gcd.git
     Executables:   gcd
-    Dependencies:  base -any, gcd -any, base -any, gcd -any, hspec -any,
-                   besout -any, base -any, gcd -any, criterion -any,
-                   besout -any, base -any
+    Dependencies:  base ==4.13.*, base ==4.13.*, gcd -any, base ==4.13.*,
+                   hspec ==2.7.*, gcd -any, base ==4.13.*, criterion ==1.5.*,
+                   gcd -any
     Cached:        Yes
     Modules:
         Gcd
-
 ```

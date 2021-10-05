@@ -1,10 +1,9 @@
 module Main where
 
-import           System.Environment (getArgs)
-
 import           Data.Version       (showVersion)
 import           Gcd                (euclid1, euclid2)
 import           Paths_gcd          (version)
+import           System.Environment (getArgs)
 
 -- | MAIN
 --
@@ -15,23 +14,22 @@ import           Paths_gcd          (version)
 -- read version from cabal configuration
 
 usage :: [String]
-usage = [
-          "Usage: gcd [int] [int]"
-        , "Calculates greatest common denominator of two integers."
-        , "GCD is caluculated using two different algorithms."
-        , "Both are evaluated with results printed on new lines."
-        , "See https://en.wikipedia.org/wiki/Euclidean_algorithm."
-        , "Version: " ++ showVersion version
-        ]
+usage =
+  [ "Usage: gcd [int] [int]",
+    "Calculates greatest common denominator of two integers.",
+    "GCD is caluculated using two different algorithms.",
+    "Both are evaluated with results printed on new lines.",
+    "See https://en.wikipedia.org/wiki/Euclidean_algorithm.",
+    "Version: " ++ showVersion version
+  ]
 
 --
 -- MAIN
 --
 main :: IO ()
 main = do
-    args <- getArgs
-    case length args of
-      2 ->  mapM_ print ([euclid1, euclid2] <*> [u] <*> [v])
-              where [u, v] = map read args
-      _ ->  putStrLn $ unlines usage
-
+  args <- getArgs
+  case length args of
+    2 -> let [u, v] = map read args
+         in mapM_ print ([euclid1, euclid2] <*> [u] <*> [v])
+    _ -> putStrLn $ unlines usage

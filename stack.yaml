@@ -3,7 +3,7 @@
 arch: x86_64
 system-ghc: true
 resolver: lts-16.31
-allow-newer: true
+allow-newer: false
 flags: {}
 packages: ['.']
-extra-deps: ['besout-0.2.0.1']
+extra-deps: []

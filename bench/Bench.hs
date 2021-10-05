@@ -4,7 +4,6 @@ module Main (main) where
 
 import           Gcd            (euclid1, euclid2)
 
-import           Bezout         (besout)
 import           Criterion.Main (bench, bgroup, defaultMain, whnf)
 
 main :: IO ()
@@ -19,9 +18,9 @@ main = defaultMain
     [
       bench "379904" $ whnf euclid2 379904
     ],
-    bgroup "besout: "
+    bgroup "gcd: "
     [
-      bench "379904" $ whnf besout 379904
+      bench "379904" $ whnf gcd 379904
     ]
   ]
 
