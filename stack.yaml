@@ -1,8 +1,6 @@
 ---
-
+resolver: lts-19.27
 arch: x86_64
-system-ghc: true
-resolver: lts-16.31
 allow-newer: false
 flags: {}
 packages: ['.']

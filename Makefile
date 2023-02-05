@@ -17,19 +17,21 @@ tags:
 	@hasktags --ctags --extendedctag $(SRCS)
 
 style:
-	@stylish-haskell -c .stylish-haskell.yaml -i $(SRCS)
+	@echo style ...
+	@stylish-haskell --verbose --config=.stylish-haskell.yaml --inplace $(SRCS)
 
 lint:
-	@hlint $(SRCS)
+	@echo lint ...
+	@hlint --color $(SRCS)
+	@cabal check --verbose=3
 
 build:
-	@stack build --no-test
+	@echo build ...
+	@stack build --verbosity info --pedantic --no-test
 
 test:
-	@stack test --coverage
-
-doc:
-	@stack haddock
+	@echo test ...
+	@stack test
 
 exec:	# Example:  make ARGS="112 12" exec
 	@stack exec $(TARGET) -- $(ARGS)
@@ -37,26 +39,30 @@ exec:	# Example:  make ARGS="112 12" exec
 bench:
 	@stack bench --benchmark-arguments '-o .stack-work/benchmark.html'
 
+doc:
+	@stack haddock --no-haddock-deps
+
 install:
 	@stack install --local-bin-path $(HOME)/bin
 
 setup:
-	@stack update
-	@stack setup
-	@stack build
-	@stack query
-	@stack ls dependencies
-	#stack exec ghc-pkg -- list
+	stack update
+	stack path
+	stack query
+	stack ls dependencies
 
 ghci:
 	@stack ghci --ghci-options -Wno-type-defaults
 
 clean:
 	@stack clean
-	@$(RM) -rf *.tix
+	@cabal clean
+	@rm -f tags
+	@rm -f $(wildcard *.hi **/*.hi)
+	@rm -f $(wildcard *.o **/*.o)
+	@rm -f $(wildcard *.prof **/*.prof)
+	@rm -f $(wildcard *.tix **/*.tix)
 
 cleanall: clean
 	@stack clean --full
-	@$(RM) -rf .stack-work/
-	@$(RM) -rf $(patsubst %.hs, %.hi, $(SRCS))
-	@$(RM) -rf $(patsubst %.hs, %.o, $(SRCS))
+	@$(RM) -rf .stack-work/ $(TARGET)

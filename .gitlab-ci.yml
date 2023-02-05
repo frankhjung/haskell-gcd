@@ -12,12 +12,12 @@ build:
   except:
     - tags
   image:
-    name: frankhjung/haskell:8.8.4
+    name: frankhjung/haskell:9.0.2
     entrypoint: [""]
   stage: build
   script:
     - make clean setup check build test bench doc exec
-    - mv $(stack path --local-doc-root)/gcd*/ public/
+    - mv $(stack path --local-install-root)/doc/gcd*/ public/
     - cp -fp .stack-work/benchmark.html public/
   artifacts:
     paths:
