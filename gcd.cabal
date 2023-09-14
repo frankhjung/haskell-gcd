@@ -1,7 +1,7 @@
 cabal-version:      3.0
 
 name:               gcd
-version:            0.10.0
+version:            0.11.0
 synopsis:           Greatest Common Denominator
 description:        Test versions of Euclid's greatest common denominator algorithm
 homepage:           https://github.com/frankhjung/gcd#readme
@@ -13,7 +13,6 @@ license-file:       LICENSE
 category:           education
 build-type:         Simple
 extra-source-files: README.md
-tested-with:        GHC == 9.0.2
 
 source-repository head
   type:             git
@@ -43,7 +42,7 @@ test-suite          test
   default-language: Haskell2010
   type:             exitcode-stdio-1.0
   build-depends:    base
-                  , hspec >= 2.7 && < 2.9
+                  , hspec
                   , gcd
   other-modules:    Gcd
 
@@ -54,6 +53,6 @@ benchmark           benchmark
   default-language: Haskell2010
   type:             exitcode-stdio-1.0
   build-depends:    base
-                  , criterion >= 1.5 && < 1.6
+                  , criterion
                   , gcd
   other-modules:    Gcd

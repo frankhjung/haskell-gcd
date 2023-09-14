@@ -23,6 +23,10 @@ usage =
     "Version: " ++ showVersion version
   ]
 
+doEuclids :: [Word] -> IO ()
+doEuclids [u, v] = mapM_ print ([euclid1, euclid2] <*> [u] <*> [v])
+doEuclids _      = putStrLn $ unlines usage
+
 --
 -- MAIN
 --
@@ -30,6 +34,6 @@ main :: IO ()
 main = do
   args <- getArgs
   case length args of
-    2 -> let [u, v] = map read args
-         in mapM_ print ([euclid1, euclid2] <*> [u] <*> [v])
+    2 -> let as = map read args
+         in doEuclids as
     _ -> putStrLn $ unlines usage

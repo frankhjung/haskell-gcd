@@ -1,7 +1,6 @@
 ---
-resolver: lts-19.27
+resolver: lts-20.26
 arch: x86_64
-allow-newer: false
 flags: {}
 packages: ['.']
-extra-deps: []
+allow-newer: true
