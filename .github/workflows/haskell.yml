@@ -12,7 +12,7 @@ on:
 # yamllint enable
 
 env:
-  STACK_ROOT: ${{ github.workspace }}/.stack
+  STACK_ROOT: ${{ github.workspace }}/.stack-work
 
 jobs:
 
@@ -30,16 +30,14 @@ jobs:
       - name: cache
         uses: actions/cache@v3
         with:
-          path: |
-            .stack-work/
-            ${{ env.STACK_ROOT }}
+          path: ${{ env.STACK_ROOT }}
           key: ${{ github.ref }}
 
       - name: build
         run: stack build --pedantic --no-test
 
       - name: test
-        run: stack test
+        run: stack test --coverage
 
       - name: exec
         run: stack exec gcd -- 112 12   # expect 4 4
@@ -47,12 +45,12 @@ jobs:
       - name: bench
         run: stack bench --benchmark-arguments '-o .stack-work/benchmark.html'
 
-      - name: haddock
+      - name: doc
         if: github.ref == 'refs/heads/master'
         run: |
-          stack haddock --no-haddock-deps
-          mv $(stack path --local-install-root)/doc/gcd*/ public/
-          mv .stack-work/benchmark.html public/
+          stack haddock
+          mv $(stack path --local-doc-root)/ public/
+          mv ${{ env.STACK_ROOT }}/benchmark.html public/
 
       - name: publish
         if: success() && github.ref == 'refs/heads/master'

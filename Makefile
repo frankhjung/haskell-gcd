@@ -1,24 +1,25 @@
 #!/usr/bin/env make
 
-.PHONY: build check tags style lint test exec bench doc install setup ghci clean cleanall
+.PHONY: build format check tags lint test exec bench doc install setup ghci clean cleanall
 
 TARGET	:= gcd
 SRCS	:= $(wildcard *.hs */*.hs)
-ARGS	?= -h
+ARGS	?= 112 12
 
 .PHONY:	default
-default: check build test
+default: format check build test
 
-all:	check build test bench doc exec
+all:	format check build test bench doc exec
 
-check:	tags style lint
+format:
+	@echo format ...
+	@stylish-haskell --verbose --config=.stylish-haskell.yaml --inplace $(SRCS)
+	@cabal-fmt --inplace gcd.cabal
+
+check:	tags lint
 
 tags:
 	@hasktags --ctags --extendedctag $(SRCS)
-
-style:
-	@echo style ...
-	@stylish-haskell --verbose --config=.stylish-haskell.yaml --inplace $(SRCS)
 
 lint:
 	@echo lint ...
@@ -40,10 +41,7 @@ bench:
 	@stack bench --benchmark-arguments '-o .stack-work/benchmark.html'
 
 doc:
-	@stack haddock --no-haddock-deps
-
-install:
-	@stack install --local-bin-path $(HOME)/bin
+	@stack haddock
 
 setup:
 	stack update
@@ -57,12 +55,7 @@ ghci:
 clean:
 	@stack clean
 	@cabal clean
-	@rm -f tags
-	@rm -f $(wildcard *.hi **/*.hi)
-	@rm -f $(wildcard *.o **/*.o)
-	@rm -f $(wildcard *.prof **/*.prof)
-	@rm -f $(wildcard *.tix **/*.tix)
 
 cleanall: clean
-	@stack clean --full
-	@$(RM) -rf .stack-work/ $(TARGET)
+	@stack purge
+	@rm -f tags

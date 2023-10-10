@@ -120,24 +120,25 @@ gcd> benchmarks
 Running 1 benchmarks...
 Benchmark benchmark: RUNNING...
 benchmarking euclid1: /379904
-time                 8.776 ns   (8.709 ns .. 8.840 ns)
-                     1.000 R²   (0.999 R² .. 1.000 R²)
-mean                 8.754 ns   (8.706 ns .. 8.870 ns)
-std dev              223.8 ps   (113.2 ps .. 407.5 ps)
-variance introduced by outliers: 42% (moderately inflated)
+time                 13.65 ns   (13.36 ns .. 14.09 ns)
+                     0.992 R²   (0.985 R² .. 0.998 R²)
+mean                 13.71 ns   (13.45 ns .. 14.20 ns)
+std dev              1.118 ns   (558.1 ps .. 1.932 ns)
+variance introduced by outliers: 88% (severely inflated)
 
 benchmarking euclid2: /379904
-time                 8.772 ns   (8.689 ns .. 8.864 ns)
-                     0.999 R²   (0.999 R² .. 1.000 R²)
-mean                 8.737 ns   (8.699 ns .. 8.820 ns)
-std dev              181.5 ps   (88.17 ps .. 300.4 ps)
-variance introduced by outliers: 33% (moderately inflated)
+time                 14.92 ns   (14.33 ns .. 15.60 ns)
+                     0.991 R²   (0.984 R² .. 1.000 R²)
+mean                 14.47 ns   (14.26 ns .. 15.04 ns)
+std dev              1.043 ns   (526.9 ps .. 1.843 ns)
+variance introduced by outliers: 85% (severely inflated)
 
 benchmarking gcd: /379904
-time                 8.676 ns   (8.669 ns .. 8.683 ns)
-                     1.000 R²   (1.000 R² .. 1.000 R²)
-mean                 8.676 ns   (8.670 ns .. 8.685 ns)
-std dev              23.67 ps   (18.23 ps .. 31.02 ps)
+time                 14.61 ns   (14.30 ns .. 15.22 ns)
+                     0.988 R²   (0.975 R² .. 0.998 R²)
+mean                 15.50 ns   (14.97 ns .. 16.38 ns)
+std dev              2.339 ns   (1.520 ns .. 3.992 ns)
+variance introduced by outliers: 96% (severely inflated)
 
 Benchmark benchmark: FINISH
 ```
@@ -234,9 +235,11 @@ Here is an example of the report:
 
 ```text
 $ cabal info .
-Warning: The package list for 'hackage.haskell.org' is 25 days old.
-Run 'cabal update' to get the latest list of available packages.
-* gcd-0.9.0              (program and library)
+Warning: Unknown/unsupported 'ghc' version detected (Cabal 3.6.2.0 supports
+'ghc' version < 9.4): /home/frank/.ghcup/bin/ghc is version 9.4.7
+Warning: The package list for 'hackage.haskell.org' does not exist. Run 'cabal
+update' to download it.
+* gcd-0.12.0              (program and library)
     Synopsis:      Greatest Common Denominator
     Versions available: [ Not available from server ]
     Versions installed: [ Not installed ]
@@ -245,14 +248,13 @@ Run 'cabal update' to get the latest list of available packages.
     Description:   Test versions of Euclid's greatest common denominator
                    algorithm
     Category:      education
-    License:       GPL-3
+    License:       GPL-3.0-only
     Author:        Frank H Jung
     Maintainer:    frankhjung@linux.com
     Source repo:   git@github.com:frankhjung/haskell-gcd.git
     Executables:   gcd
-    Dependencies:  base ==4.13.*, base ==4.13.*, gcd -any, base ==4.13.*,
-                   hspec ==2.7.*, gcd -any, base ==4.13.*, criterion ==1.5.*,
-                   gcd -any
+    Dependencies:  base, base >=4.13 && <5.0, gcd, base, gcd, hspec, base,
+                   criterion, gcd
     Cached:        Yes
     Modules:
         Gcd

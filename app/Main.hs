@@ -23,9 +23,10 @@ usage =
     "Version: " ++ showVersion version
   ]
 
-doEuclids :: [Word] -> IO ()
-doEuclids [u, v] = mapM_ print ([euclid1, euclid2] <*> [u] <*> [v])
-doEuclids _      = putStrLn $ unlines usage
+-- | Run using two different algorithms, read values from STDIN.
+-- Can we use an arrow here?
+doEuclids :: Word -> Word -> IO ()
+doEuclids u v = mapM_ print ([euclid1, euclid2] <*> [u] <*> [v])
 
 --
 -- MAIN
@@ -33,7 +34,7 @@ doEuclids _      = putStrLn $ unlines usage
 main :: IO ()
 main = do
   args <- getArgs
-  case length args of
-    2 -> let as = map read args
-         in doEuclids as
-    _ -> putStrLn $ unlines usage
+  let as = map read args :: [Word]
+  case as of
+    [x, y] -> doEuclids x y
+    _      -> putStrLn $ unlines usage
