@@ -4,7 +4,7 @@
 
 TARGET	:= gcd
 SRCS	:= $(wildcard *.hs */*.hs)
-ARGS	?= 112 12
+ARGS	?= 371 4452		# result: 371 371
 
 .PHONY:	default
 default: format check build test
@@ -34,7 +34,7 @@ test:
 	@echo test ...
 	@stack test
 
-exec:	# Example:  make ARGS="112 12" exec
+exec:	# Example:  make ARGS="112 12" exec ; Result: 4 4
 	@stack exec $(TARGET) -- $(ARGS)
 
 bench:
