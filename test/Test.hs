@@ -2,6 +2,8 @@ import           Gcd        (euclid1, euclid2)
 
 import           Test.Hspec (context, describe, hspec, it, shouldBe)
 
+-- TODO - use quickcheck to compare results from euclid1, euclid2 and gcd
+
 main :: IO ()
 main = hspec $ do
 

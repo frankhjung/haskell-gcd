@@ -10,15 +10,15 @@ main :: IO ()
 main = defaultMain
 
   [
-    bgroup "euclid1: "
+    bgroup "euclid1: " -- algorithm 1
     [
       bench "379904" $ whnf euclid1 379904
     ],
-    bgroup "euclid2: "
+    bgroup "euclid2: " -- algorithm 2
     [
       bench "379904" $ whnf euclid2 379904
     ],
-    bgroup "gcd: "
+    bgroup "gcd: " -- system function
     [
       bench "379904" $ whnf gcd 379904
     ]
