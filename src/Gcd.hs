@@ -20,8 +20,8 @@ import           Data.Bool (bool)
 
 -- | Method 1 - using only subtraction
 euclid1 :: Word -> Word -> Word
-euclid1 u v | u <= 0    = 0
-            | v <= 0    = 0
+euclid1 u v | u <= 0    = v
+            | v <= 0    = u
             | u == v    = u
             | u < v     = euclid1 u (v - u)
             | otherwise = euclid1 (u - v)  v
@@ -29,4 +29,4 @@ euclid1 u v | u <= 0    = 0
 -- | Method 2 - using modulus
 euclid2 :: Word -> Word -> Word
 euclid2 u v = bool (euclid2 v remainder) v (remainder == 0)
-              where remainder = u `mod` v
+              where remainder = bool (u `mod` v) u (v == 0)

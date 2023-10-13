@@ -23,9 +23,11 @@ can show me where I went wrong and should have stuck with Cabal?
 
 In this project, I will show how to:
 
+* build using [stack](https://docs.haskellstack.org)
+* format cabal configuration files using [cabal-fmt](https://hackage.haskell.org/package/cabal-fmt)
 * [lint](http://hackage.haskell.org/package/hlint) and [style](https://hackage.haskell.org/package/stylish-haskell) source code
 * build using [GNU Make](https://www.gnu.org/software/make/) using [Stack](https://docs.haskellstack.org)
-* unit test with [HSpec](http://hackage.haskell.org/package/hspec)
+* unit test with [HSpec](http://hackage.haskell.org/package/hspec) and [QuickCheck](http://hackage.haskell.org/package/QuickCheck)
 * benchmark with [Criterion](http://hackage.haskell.org/package/criterion)
 * document using [Haddock](http://hackage.haskell.org/package/haddock)
 * profile using [GHC](https://www.haskell.org/ghc/)
@@ -39,9 +41,9 @@ testing and benchmarking. The GCD algorithms are described
 API documentation is available from:
 
 * [GitHub Pages](https://frankhjung.github.io/haskell-gcd/)
-	* [API](https://frankhjung.github.io/haskell-gcd/)
-	* [Benchmark](https://frankhjung.github.io/haskell-gcd/benchmark.html)
+  * [Benchmark](https://frankhjung.github.io/haskell-gcd/benchmark.html)
 * [GitLab Pages](https://frankhjung1.gitlab.io/haskell-gcd)
+  * [Benchmark](https://frankhjung1.gitlab.io/haskell-gcd/benchmark.html)
 
 Documentation is produced using [Haddock](http://hackage.haskell.org/package/haddock).
 
@@ -120,27 +122,28 @@ gcd> benchmarks
 Running 1 benchmarks...
 Benchmark benchmark: RUNNING...
 benchmarking euclid1: /379904
-time                 13.65 ns   (13.36 ns .. 14.09 ns)
-                     0.992 R²   (0.985 R² .. 0.998 R²)
-mean                 13.71 ns   (13.45 ns .. 14.20 ns)
-std dev              1.118 ns   (558.1 ps .. 1.932 ns)
-variance introduced by outliers: 88% (severely inflated)
+time                 18.62 ns   (17.59 ns .. 19.73 ns)
+                     0.983 R²   (0.973 R² .. 0.996 R²)
+mean                 18.60 ns   (17.92 ns .. 19.83 ns)
+std dev              3.045 ns   (1.540 ns .. 5.638 ns)
+variance introduced by outliers: 97% (severely inflated)
 
 benchmarking euclid2: /379904
-time                 14.92 ns   (14.33 ns .. 15.60 ns)
-                     0.991 R²   (0.984 R² .. 1.000 R²)
-mean                 14.47 ns   (14.26 ns .. 15.04 ns)
-std dev              1.043 ns   (526.9 ps .. 1.843 ns)
-variance introduced by outliers: 85% (severely inflated)
+time                 19.09 ns   (18.64 ns .. 19.60 ns)
+                     0.995 R²   (0.992 R² .. 0.997 R²)
+mean                 19.45 ns   (18.99 ns .. 20.04 ns)
+std dev              1.810 ns   (1.376 ns .. 2.618 ns)
+variance introduced by outliers: 91% (severely inflated)
 
 benchmarking gcd: /379904
-time                 14.61 ns   (14.30 ns .. 15.22 ns)
-                     0.988 R²   (0.975 R² .. 0.998 R²)
-mean                 15.50 ns   (14.97 ns .. 16.38 ns)
-std dev              2.339 ns   (1.520 ns .. 3.992 ns)
-variance introduced by outliers: 96% (severely inflated)
+time                 18.51 ns   (17.86 ns .. 19.19 ns)
+                     0.990 R²   (0.983 R² .. 0.995 R²)
+mean                 18.88 ns   (18.28 ns .. 19.52 ns)
+std dev              2.038 ns   (1.595 ns .. 2.628 ns)
+variance introduced by outliers: 93% (severely inflated)
 
 Benchmark benchmark: FINISH
+Completed 2 action(s).
 ```
 
 ### Report
@@ -153,19 +156,19 @@ Benchmark benchmark: FINISH
 
 The following shows how to profile this application using GHC:
 
-1. compile with profiling
+* compile with profiling
 
   ```bash
   ghc -prof -fprof-auto -rtsopts app/Main.hs src/GCD.hs
   ```
 
-2. to profile run program with arguments:
+* to profile run program with arguments:
 
 ```bash
 app/Main 371 379904 +RTS -p
 ```
 
-3. results are reported in `Main.prof`:
+* results are reported in `Main.prof`:
 
 ```text
 Fri Jul 27 23:05 2018 Time and Allocation Profiling Report  (Final)
@@ -209,19 +212,19 @@ MAIN                 MAIN                  <built-in>                 118       
 Another useful tool for performance profiling is
 [ThreadScope](https://wiki.haskell.org/ThreadScope).
 
-1. compile with multi-threaded runtime:
+* compile with multi-threaded runtime:
 
 ```bash
 ghc -threaded -eventlog -rtsopts --make app/Main.hs src/GCD.hs
 ```
 
-2. execute program and generate a profile use the `-ls` flag after `+RTS`
+* execute program and generate a profile use the `-ls` flag after `+RTS`
 
 ```bash
 app/Main 371 379904 +RTS -ls -N2
 ```
 
-3. pass the profile into ThreadScope:
+* pass the profile into ThreadScope:
 
 ```bash
 threadscope Main.eventlog
