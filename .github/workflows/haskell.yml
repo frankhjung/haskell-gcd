@@ -37,7 +37,7 @@ jobs:
         run: stack build --pedantic --no-test
 
       - name: test
-        run: stack test --coverage
+        run: stack test
 
       - name: exec
         run: stack exec gcd -- 112 12   # expect 4 4
