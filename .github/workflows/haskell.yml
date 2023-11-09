@@ -22,6 +22,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
 
       - name: checkout
@@ -43,7 +46,7 @@ jobs:
         run: stack exec gcd -- 112 12   # expect 4 4
 
       - name: bench
-        run: stack bench --benchmark-arguments '-o .stack-work/benchmark.html'
+        run: stack bench --benchmark-arguments "-o ${{ env.STACK_ROOT }}/benchmark.html"
 
       - name: doc
         if: github.ref == 'refs/heads/main'
