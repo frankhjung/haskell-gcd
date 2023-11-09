@@ -35,7 +35,7 @@ test:
 	@stack test
 
 exec:	# Example:  make ARGS="112 12" exec ; Result: 4 4
-	@stack exec $(TARGET) -- $(ARGS)
+	-stack exec $(TARGET) -- $(ARGS)
 
 bench:
 	@stack bench --benchmark-arguments '-o .stack-work/benchmark.html'

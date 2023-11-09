@@ -13,6 +13,7 @@ import           System.Environment (getArgs)
 
 -- read version from cabal configuration
 
+-- | Usage information.
 usage :: [String]
 usage =
   [ "Usage: gcd [int] [int]",
@@ -23,18 +24,16 @@ usage =
     "Version: " ++ showVersion version
   ]
 
--- | Run using two different algorithms, read values from STDIN.
--- Can we use an arrow here?
-doEuclids :: Word -> Word -> IO ()
-doEuclids u v = mapM_ print ([euclid1, euclid2] <*> [u] <*> [v])
+-- | Parse command line arguments.
+parseArgs :: [Word] -> Either String (Word, Word)
+parseArgs [x, y] = Right (x, y)
+parseArgs _      = Left $ unlines usage
 
---
--- MAIN
---
+-- | Run using two different algorithms.
+doEuclids :: (Word, Word) -> String
+doEuclids (u, v) = unlines $ map (\f -> show $ f u v) [euclid1, euclid2]
+
+-- | MAIN
+-- Process command line arguments and print results.
 main :: IO ()
-main = do
-  args <- getArgs
-  let as = map read args :: [Word]
-  case as of
-    [x, y] -> doEuclids x y
-    _      -> putStrLn $ unlines usage
+main = putStrLn . either id doEuclids . parseArgs . map read =<< getArgs

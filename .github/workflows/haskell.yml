@@ -5,7 +5,7 @@ name: haskell gcd
 # yamllint disable-line rule:truthy
 on:
   push:
-    branches: ['master', 'feature*']
+    branches: ['main', 'feature*']
     tags-ignore: ['*']
   check_run:
     types: [rerequested, requested_action]
@@ -46,14 +46,14 @@ jobs:
         run: stack bench --benchmark-arguments '-o .stack-work/benchmark.html'
 
       - name: doc
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         run: |
           stack haddock
           mv $(stack path --local-doc-root)/ public/
           mv ${{ env.STACK_ROOT }}/benchmark.html public/
 
       - name: publish
-        if: success() && github.ref == 'refs/heads/master'
+        if: success() && github.ref == 'refs/heads/main'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
