@@ -7,18 +7,19 @@ SRCS	:= $(wildcard *.hs */*.hs)
 ARGS	?= 371 4452		# result: 371 371
 
 .PHONY:	default
-default: format check build test
+default: format check build test exec
 
 all:	format check build test bench doc exec
 
 format:
 	@echo format ...
-	@stylish-haskell --verbose --config=.stylish-haskell.yaml --inplace $(SRCS)
-	@cabal-fmt --inplace gcd.cabal
+	@stylish-haskell --verbose --inplace $(SRCS)
+	@cabal-fmt --inplace $(TARGET).cabal
 
 check:	tags lint
 
 tags:
+	@echo tags ...
 	@hasktags --ctags --extendedctag $(SRCS)
 
 lint:
